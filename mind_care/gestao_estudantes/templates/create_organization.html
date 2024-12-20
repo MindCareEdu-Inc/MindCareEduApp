@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <title>Cadastrar Organização</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+        .form-section {
+            margin-bottom: 20px;
+        }
+        .form-section label {
+            font-weight: bold;
+        }
+        .form-section input, .form-section select {
+            width: 100%;
+            padding: 8px;
+            margin-top: 5px;
+        }
+        .button {
+            padding: 10px 15px;
+            background-color: #3498db;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+        .button:hover {
+            background-color: #2980b9;
+        }
+        .form-footer {
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Cadastrar Nova Organização</h1>
+    
+    <!-- Exibe mensagens de erro, se houver -->
+    {% if address_form.errors %}
+        <div class="errors">
+            <h3>Erro no formulário de endereço:</h3>
+            <ul>
+                {% for error in address_form.errors %}
+                    <li>{{ error }}</li>
+                {% endfor %}
+            </ul>
+        </div>
+    {% endif %}
+
+    {% if organization_form.errors %}
+        <div class="errors">
+            <h3>Erro no formulário de organização:</h3>
+            <ul>
+                {% for error in organization_form.errors %}
+                    <li>{{ error }}</li>
+                {% endfor %}
+            </ul>
+        </div>
+    {% endif %}
+
+    <form method="POST">
+        {% csrf_token %}
+        <div class="form-section">
+            <h2>Dados da Organização</h2>
+            <label for="id_name">Nome da Organização:</label>
+            {{ organization_form.name }}
+            
+            <label for="id_phone">Telefone:</label>
+            {{ organization_form.phone }}
+            
+            <label for="id_email">E-mail:</label>
+            {{ organization_form.email }}
+            
+            <label for="id_active">Ativa:</label>
+            {{ organization_form.active }}
+        </div>
+        
+        <div class="form-section">
+            <h2>Endereço</h2>
+            <label for="id_street">Rua:</label>
+            {{ address_form.street }}
+            
+            <label for="id_number">Número:</label>
+            {{ address_form.number }}
+            
+            <label for="id_neighborhood">Bairro:</label>
+            {{ address_form.neighborhood }}
+            
+            <label for="id_cep">CEP:</label>
+            {{ address_form.cep }}
+            
+            <label for="id_complement">Complemento:</label>
+            {{ address_form.complement }}
+            
+            <label for="id_city">Cidade:</label>
+            {{ address_form.city }} <!-- Dropdown de cidades -->
+            
+            <label for="id_active">Ativo:</label>
+            {{ address_form.active }}
+        </div>
+
+        <button type="submit" class="button">Salvar</button>
+    </form>
+
+    <div class="form-footer">
+        <a href="{% url 'list_organizations' %}">Voltar para a lista</a>
+    </div>
+</body>
+</html>
