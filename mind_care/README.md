@@ -28,6 +28,7 @@ A saúde mental de estudantes tem enfrentado desafios significativos nos último
 1. Clone o repositório:
 	```
 	git clone https://github.com/MindCareEdu-Inc/MindCareEduApp.git
+ 	cd MindCareEduApp
 	cd mind-care
 	```
 
