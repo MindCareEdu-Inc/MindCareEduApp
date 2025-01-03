@@ -10,6 +10,7 @@
   <div class="w-full max-w-lg bg-white p-8 rounded-lg shadow-lg">
     <h1 class="text-2xl font-bold text-gray-700 mb-6 text-center">Cadastro de Alunos</h1>
     <form action="#" method="POST">
+      {% csrf_token %}
       <!-- Nome -->
       <div class="mb-4">
         <label for="nome" class="block text-gray-700 font-medium mb-2">Nome</label>
@@ -49,6 +50,8 @@
           class="mt-1 block w-full px-4 py-2 bg-gray-50 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500" 
           placeholder="Re-enter your password" required>
       </div>
+
+
       <!-- Botão de Cadastro -->
       <button type="submit"
         class="w-full bg-blue-500 text-white font-medium py-2 px-4 rounded-lg hover:bg-blue-600 transition duration-300">

@@ -15,7 +15,7 @@ class Estudante(models.Model):
     contatos = models.CharField(max_length=50)
     email = models.CharField(max_length=100)
     sexo = models.CharField(max_length=20)
-    foto = models.ImageField(upload_to='images/')
+    foto = models.ImageField(upload_to='imagens/')
 
 class DadosAcademicos(models.Model):
     matricula = models.ForeignKey(Estudante, on_delete=models.CASCADE)

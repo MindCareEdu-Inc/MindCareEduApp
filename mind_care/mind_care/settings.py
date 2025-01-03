@@ -12,6 +12,9 @@ https://docs.djangoproject.com/en/5.1/ref/settings/
 
 from pathlib import Path
 import os
+from dotenv import load_dotenv
+
+load_dotenv()
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -26,6 +29,16 @@ SECRET_KEY = 'django-insecure-0!(eat_6p6r+(9)ekc6itn1z94nw66$8t8jtx!ij#8m5mm!*+^
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
+#CONFIGURAÇÕES DA AWS
+AWS_ACCESS_KEY_ID = os.getenv('AWS_ACCESS_KEY')
+AWS_SECRET_ACCESS_KEY = os.getenv('AWS_SECRET_KEY')
+AWS_STORAGE_BUCKET_NAME = os.getenv('AWS_BUCKET_NAME')
+AWS_REGION = os.getenv('AWS_REGION', default='us-east-1')
+AWS_QUERYING_AUTH = False
+AWS_DEFAULT_ACL = None
+AWS_S3_CUSTOM_DOMAIN = f"{AWS_STORAGE_BUCKET_NAME}.s3.{AWS_REGION}.amazonaws.com"
+
+
 ALLOWED_HOSTS = []
 
 
@@ -39,6 +52,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'gestao_estudantes',
+    'storages',
 ]
 
 MIDDLEWARE = [
@@ -54,6 +68,24 @@ MIDDLEWARE = [
 ROOT_URLCONF = 'mind_care.urls'
 
 BASE_DIR = Path(__file__).resolve().parent.parent
+
+STORAGES = {
+    "default": {
+        "BACKEND": "storages.backends.s3.S3Storage",
+        "OPTIONS": {
+          "access_key": AWS_ACCESS_KEY_ID,
+          "secret_key": AWS_SECRET_ACCESS_KEY,
+          "bucket_name": AWS_STORAGE_BUCKET_NAME,
+          "region_name": AWS_REGION,
+        },
+    },
+    "staticfiles":{
+        "BACKEND": "django.contrib.staticfiles.storage.StaticFilesStorage",
+    },
+}
+
+DEFAULT_FILE_STORAGE = "storages.backends.s3boto3.S3Boto3Storage"
+MEDIA_URL = f"https://{AWS_S3_CUSTOM_DOMAIN}/"
 
 TEMPLATES = [
     {
@@ -73,7 +105,6 @@ TEMPLATES = [
 
 STATIC_URL = '/static/'
 
-MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 

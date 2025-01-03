@@ -11,7 +11,7 @@ import json
 
 class EstudanteCreateView(CreateView): 
     model = Estudante 
-    template_name = 'estudante_form.html' 
+    template_name = 'cadastro.html' 
     fields = ['matricula', 'nome', 'contatos', 'email', 'sexo', 'foto'] 
     success_url = reverse_lazy('estudante-create')
 
