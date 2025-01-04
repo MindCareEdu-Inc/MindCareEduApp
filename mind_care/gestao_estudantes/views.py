@@ -14,6 +14,10 @@ class EstudanteCreateView(CreateView):
     template_name = 'cadastro.html' 
     fields = ['matricula', 'nome', 'contatos', 'email', 'sexo', 'foto'] 
     success_url = reverse_lazy('estudante-create')
+    
+    def form_invalid(self, form):
+        print(form.errors)
+        return super().form_invalid(form)
 
 
 class AdministradorListView(ListView):
