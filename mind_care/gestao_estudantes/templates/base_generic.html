@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+<head>
+    {% load static %}
+    <title>{% block title %}Mind Care{% endblock %}</title>
+    <link rel="stylesheet" type="text/css" href="{% static 'style.css' %}">
+</head>
+<body>
+    <header>
+        <h1>Mind Care</h1>
+        <nav>
+            <ul>
+                <li><a href="{% url 'home1' %}">Home</a></li>
+                <li><a href="{% url 'cadastro' %}">cadastrar</a></li>
+                <li><a href="{% url 'emocoes-list' %}">Emoções</a></li>
+                <li><a href="{% url 'relatorios-list' %}">Relatórios</a></li>
+                <li><a href="{% url 'list_organizations' %}">Listar Organizações</a></li>
+                <li><a href="{% url 'create_organization' %}">Cadastrar Nova Organização</a></li>
+                <li><a href="{% url 'student_create' %}">Novo estudante</a></li>
+                <li><a href="{% url 'server_create' %}">Novo servidor</a></li>
+            </ul>
+        </nav>
+    </header>
+    <div id="content">
+        {% block content %}
+        {% endblock %}
+    </div>
+    <footer>
+        <p>&copy; 2024 Mind Care</p>
+    </footer>
+</body>
+</html>

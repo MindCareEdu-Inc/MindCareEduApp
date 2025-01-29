@@ -1,0 +1,15 @@
+{% extends 'base_generic.html' %}
+
+{% block title %}Lista de Emoções{% endblock %}
+
+{% block content %}
+<h2>Lista de Emoções</h2>
+<ul>
+    {% for emocao in object_list %}
+    <li>
+        <img src="{{ emocao.foto.url }}" alt="Emoção" style="width:50px;height:50px;">
+        {{ emocao.descricao }} - {{ emocao.emocao_detectada }} - {{ emocao.data_hora }} - {{ emocao.confianca }}
+    </li>
+    {% endfor %}
+</ul>
+{% endblock %}
