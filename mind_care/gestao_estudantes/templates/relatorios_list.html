@@ -1,0 +1,14 @@
+{% extends 'base_generic.html' %}
+
+{% block title %}Lista de Relatórios{% endblock %}
+
+{% block content %}
+<h2>Lista de Relatórios</h2>
+<ul>
+    {% for relatorio in object_list %}
+    <li>
+        {{ relatorio.relatorio }} - {{ relatorio.emocao_detectada }} - {{ relatorio.data_hora }}
+    </li>
+    {% endfor %}
+</ul>
+{% endblock %}

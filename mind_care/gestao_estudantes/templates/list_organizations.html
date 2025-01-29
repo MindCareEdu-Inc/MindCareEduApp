@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <title>Lista de Organizações</title>
+</head>
+<body>
+    <h1>Lista de Organizações</h1>
+    <a href="{% url 'create_organization' %}">Cadastrar Nova Organização</a>
+    <table border="1">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Nome</th>
+                <th>Telefone</th>
+                <th>Email</th>
+                <th>Ativo</th>
+                <th>Cidade</th>
+                <th>UF</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for organization in organizations %}
+            <tr>
+                <td>{{ organization.id }}</td>
+                <td>{{ organization.name }}</td>
+                <td>{{ organization.phone }}</td>
+                <td>{{ organization.email }}</td>
+                <td>{{ organization.active }}</td>
+                <td>{{ organization.address.city.name }}</td>  <!-- Cidade da organização -->
+                <td>{{ organization.address.city.uf.name }}</td>  <!-- UF da cidade da organização -->
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="7">Nenhuma organização cadastrada.</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</body>
+</html>

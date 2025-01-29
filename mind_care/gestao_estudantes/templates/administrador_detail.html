@@ -1,0 +1,10 @@
+{% extends 'base_generic.html' %}
+{% block content %}
+<h1>{{ object.nome }}</h1>
+<p>Contatos: {{ object.contatos }}</p>
+<p>Email: {{ object.email }}</p>
+<p>Sexo: {{ object.sexo }}</p>
+<p>Senha: {{ object.senha }}</p>
+<a href="{% url 'administrador-update' object.pk %}">Editar</a>
+<a href="{% url 'administrador-delete' object.pk %}">Deletar</a>
+{% endblock %}
