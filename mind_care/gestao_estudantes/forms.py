@@ -1,5 +1,9 @@
 from django import forms
+<<<<<<< HEAD
 from .models import Address, Organization, Student, City
+=======
+from .models import Address, Organization, City
+>>>>>>> 4c39874e420e0759272f3da8c8317543df187f22
 
 class AddressForm(forms.ModelForm):
     class Meta:
@@ -15,6 +19,7 @@ class AddressForm(forms.ModelForm):
 class OrganizationForm(forms.ModelForm):
     class Meta:
         model = Organization
+<<<<<<< HEAD
         fields = ['name', 'phone', 'email', 'active']
 
 class StudentForm(forms.ModelForm):
@@ -22,3 +27,6 @@ class StudentForm(forms.ModelForm):
         model = Student
         fields = ['code', 'name', 'phone', 'email', 'gender', 'photo', 'organization', 'active']
         
+=======
+        fields = ['name', 'phone', 'email', 'active']
+>>>>>>> 4c39874e420e0759272f3da8c8317543df187f22

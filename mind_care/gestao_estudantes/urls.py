@@ -4,8 +4,11 @@ from . import views
 urlpatterns = [
   
     path('', views.home, name='home'),
+<<<<<<< HEAD
     path('home1/', views.home1, name='home1'),
     path('student/create/', views.student_create, name='student_create'),
+=======
+>>>>>>> 4c39874e420e0759272f3da8c8317543df187f22
     path('organizations/', views.list_organizations, name='list_organizations'),
     path('organizations/create/', views.create_organization, name='create_organization'),
     path('receber-emocoes/', views.receber_emocoes, name='receber-emocoes'),

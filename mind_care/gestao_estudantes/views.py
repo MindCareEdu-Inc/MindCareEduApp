@@ -6,14 +6,28 @@ from django.urls import reverse_lazy
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
 from .models import Administrador, Estudante, Emocoes, Relatorios
 from .models import Organization
+<<<<<<< HEAD
 from .forms import AddressForm, OrganizationForm, StudentForm
+=======
+from .forms import AddressForm, OrganizationForm
+>>>>>>> 4c39874e420e0759272f3da8c8317543df187f22
 import json
 
 class EstudanteCreateView(CreateView): 
     model = Estudante 
+<<<<<<< HEAD
     template_name = 'estudante_form.html' 
     fields = ['matricula', 'nome', 'contatos', 'email', 'sexo', 'foto'] 
     success_url = reverse_lazy('estudante-create')
+=======
+    template_name = 'cadastro.html' 
+    fields = ['matricula', 'nome', 'contatos', 'email', 'sexo', 'foto'] 
+    success_url = reverse_lazy('estudante-create')
+    
+    def form_invalid(self, form):
+        print(form.errors)
+        return super().form_invalid(form)
+>>>>>>> 4c39874e420e0759272f3da8c8317543df187f22
 
 
 class AdministradorListView(ListView):
@@ -88,6 +102,7 @@ def create_organization(request):
         'organization_form': organization_form,
     })
 
+<<<<<<< HEAD
 
 @csrf_exempt
 def student_create(request):
@@ -105,6 +120,8 @@ def student_create(request):
     return render(request, 'student_create.html', {'form': form, 'organizations': organizations})
 
 
+=======
+>>>>>>> 4c39874e420e0759272f3da8c8317543df187f22
 @csrf_exempt
 def cadastro(request):
     if request.method == "POST":
@@ -169,7 +186,11 @@ def receber_relatorios(request):
         return JsonResponse({'status': 'Relatório recebido e armazenado com sucesso'})
 
 def home(request):
+<<<<<<< HEAD
     return render(request, 'home.html')
 
 def home1(request):
     return render(request, 'home1.html')
+=======
+    return render(request, 'home.html')
+>>>>>>> 4c39874e420e0759272f3da8c8317543df187f22

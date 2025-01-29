@@ -15,7 +15,11 @@ class Estudante(models.Model):
     contatos = models.CharField(max_length=50)
     email = models.CharField(max_length=100)
     sexo = models.CharField(max_length=20)
+<<<<<<< HEAD
     foto = models.ImageField(upload_to='images/')
+=======
+    foto = models.ImageField(upload_to='imagens/')
+>>>>>>> 4c39874e420e0759272f3da8c8317543df187f22
 
 class DadosAcademicos(models.Model):
     matricula = models.ForeignKey(Estudante, on_delete=models.CASCADE)
@@ -99,6 +103,7 @@ class Organization(models.Model):
 
 # Student
 class Student(models.Model):
+<<<<<<< HEAD
     code = models.CharField(max_length=20, unique=True)
     name = models.CharField(max_length=255)
     phone = models.CharField(max_length=20)
@@ -109,6 +114,18 @@ class Student(models.Model):
     active = models.BooleanField(default=True)
 
 
+=======
+    id = models.AutoField(primary_key=True)
+    code = models.CharField(max_length=20, unique=True)
+    name = models.CharField(max_length=255)
+    phone = models.CharField(max_length=50)
+    email = models.CharField(max_length=100)
+    gender = models.CharField(max_length=1, choices=[('M', 'Male'), ('F', 'Female'), ('O', 'Other')])
+    photo = models.CharField(max_length=255, blank=True, null=True)
+    organization = models.ForeignKey(Organization, on_delete=models.CASCADE, related_name='students')
+    active = models.BooleanField(default=True)
+
+>>>>>>> 4c39874e420e0759272f3da8c8317543df187f22
     def _str_(self):
         return self.name
 
