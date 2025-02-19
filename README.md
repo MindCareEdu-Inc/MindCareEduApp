@@ -33,14 +33,15 @@ A saúde mental de estudantes tem enfrentado desafios significativos nos último
 	```
 
 2. Criando ambiente virtual
-2.1 Usando venv 
+   
+	2.1 Usando venv 
 	```
 	python -m venv venv
 	source venv/bin/activate  # Linux/MacOS
 	venv\Scripts\activate     # Windows
 	```
 
- 2.2. Usando Anaconda:
+ 	2.2. Usando Anaconda:
 	```
 	conda -n mindcareedu
 	activate mindcareedu  # Linux/MacOS
