@@ -43,7 +43,7 @@ A saúde mental de estudantes tem enfrentado desafios significativos nos último
 
  	2.2. Usando Anaconda:
 	```
-	conda -n mindcareedu
+	conda create -n mindcareedu
 	activate mindcareedu  # Linux/MacOS
 	conda activate mindcareedu  # Windows
 	```
