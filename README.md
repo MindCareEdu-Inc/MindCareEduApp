@@ -29,14 +29,22 @@ A saúde mental de estudantes tem enfrentado desafios significativos nos último
 	```
 	git clone https://github.com/MindCareEdu-Inc/MindCareEduApp.git
  	cd MindCareEduApp
-	cd mind-care
+	cd mind_care
 	```
 
-2. Crie e ative um ambiente virtual:
+2. Criando ambiente virtual
+2.1 Usando venv 
 	```
 	python -m venv venv
 	source venv/bin/activate  # Linux/MacOS
 	venv\Scripts\activate     # Windows
+	```
+
+ 2.2. Usando Anaconda:
+	```
+	conda -n mindcareedu
+	activate mindcareedu  # Linux/MacOS
+	conda activate mindcareedu  # Windows
 	```
 
 3. Instale as dependências:
