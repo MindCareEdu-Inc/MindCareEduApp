@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    {% load static %}
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Mind Care{% endblock %}</title>
+    <link rel="stylesheet" type="text/css" href="{% static 'style.css' %}">
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+
+<body class="bg-gradient-to-br from-white-900 via-gray-800 to-gray-900 text-black min-h-screen font-sans">
+    <header class="flex items-center justify-between px-6 py-4 bg-blue-900 text-white backdrop-blur-lg shadow-lg">
+        <!-- Nome da empresa -->
+        <div class="text-2xl font-bold tracking-wider">Mind Care Edu</div>
+        
+        <!-- Menu de navegação visível apenas em telas maiores (desktop) -->
+        <nav class="hidden md:flex gap-8 text-lg">
+            <a href="{% url 'home' %}" class="hover:text-cyan-400">Home</a>
+            
+            {% if user.is_authenticated %}
+                {% if request.session.user_type == "admin" %}
+                    <a href="{% url 'list_organizations' %}" class="hover:text-cyan-400">Listar Organizações</a>
+                    <a href="{% url 'create_organization' %}" class="hover:text-cyan-400">Cadastrar Nova Organização</a>
+                    <a href="{% url 'server_create' %}" class="hover:text-cyan-400">Novo Servidor</a>
+                    <a href="{% url 'server_list' %}" class="hover:text-cyan-400">Listar Servidor</a>
+                    
+                {% elif request.session.user_type == "server" %}
+                    <a href="{% url 'student_list' %}" class="hover:text-cyan-400">Listar Alunos</a>
+                    <a href="{% url 'student_create' %}" class="hover:text-cyan-400">Novo Estudante</a>
+                    <a href="{% url 'relatorios-list' %}" class="hover:text-cyan-400">Relatórios</a>
+                {% endif %}
+                <a href="{% url 'minha_conta' %}" class="px-3 py-1 bg-cyan-500 text-gray-900 font-semibold rounded-full shadow-md hover:bg-cyan-400">Conta</a>
+            {% else %}
+                <a href="{% url 'login' %}" class="px-3 py-1 bg-cyan-500 text-gray-900 font-semibold rounded-full shadow-md hover:bg-cyan-400">Login</a>
+            {% endif %}
+        </nav>
+        
+        <!-- Botão de menu para dispositivos móveis -->
+        <button id="menuToggle" class="block md:hidden text-2xl text-white">☰</button>
+    </header>
+    
+    <!-- Menu de navegação para mobile -->
+    <div id="mobileMenu"
+        class="hidden md:hidden bg-gray-800/90 fixed inset-0 z-50 flex flex-col items-center gap-8 pt-20">
+        
+        <a href="{% url 'home' %}" class="text-lg text-white hover:text-blue-900/80">Home</a>
+        
+        {% if user.is_authenticated %}
+            {% if request.session.user_type == "admin" %}
+                <a href="{% url 'list_organizations' %}" class="text-lg text-white hover:text-blue-900/80">Listar Organizações</a>
+                <a href="{% url 'create_organization' %}" class="text-lg text-white hover:text-blue-900/80">Cadastrar Nova Organização</a>
+                <a href="{% url 'server_create' %}" class="text-lg text-white hover:text-blue-900/80">Novo Servidor</a>
+                <a href="{% url 'server_list' %}" class="text-lg text-white hover:text-blue-900/80">Listar Servidor</a>
+            {% elif request.session.user_type == "server" %}
+                <a href="{% url 'student_list' %}" class="text-lg text-white hover:text-blue-900/80">Listar Alunos</a>
+                <a href="{% url 'student_create' %}" class="text-lg text-white hover:text-blue-900/80">Novo Estudante</a>
+                <a href="{% url 'relatorios-list' %}" class="text-lg text-white hover:text-blue-900/80">Relatórios</a>
+            {% endif %}
+        <a href="{% url 'minha_conta' %}" class="px-3 py-1 bg-cyan-500 text-gray-900 font-semibold rounded-full shadow-md hover:bg-cyan-400">Conta</a>
+        {% else %}
+            <a href="{% url 'login' %}" class="px-3 py-1 bg-cyan-500 text-gray-900 font-semibold rounded-full shadow-md hover:bg-cyan-400">Login</a>
+        {% endif %}
+    </div>
+
+    <div id="content">
+        {% block content %}
+        {% endblock %}
+    </div>
+
+    <footer class="bg-blue-900 text-white py-6 mt-10">
+        <div class="container mx-auto text-center">
+            <p class="text-sm">&copy; 2025 Mind Care. Todos os direitos reservados.</p>
+            <div class="flex justify-center space-x-4 mt-4">
+                <a href="#" class="text-gray-400 hover:text-white">Facebook</a>
+                <a href="#" class="text-gray-400 hover:text-white">Instagram</a>
+                <a href="#" class="text-gray-400 hover:text-white">Twitter</a>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        const menuToggle = document.getElementById('menuToggle');
+        const mobileMenu = document.getElementById('mobileMenu');
+        menuToggle.addEventListener('click', () => {
+            mobileMenu.classList.toggle('hidden');
+            console.log('Menu alternado');
+});
+    </script>
+</body>
+
+</html>
+
+

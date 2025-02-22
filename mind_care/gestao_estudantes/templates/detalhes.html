@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Detalhes da Emoção</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    <style>
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0, 0, 0, 0.4);
+        }
+
+        .modal-content {
+            background-color: #fefefe;
+            margin: 15% auto;
+            padding: 20px;
+            border: 1px solid #888;
+            width: 80%;
+            max-width: 600px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .close {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+        }
+
+        .close:hover,
+        .close:focus {
+            color: black;
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+        .modal-content h2 {
+            font-size: 1.5rem;
+            margin-bottom: 10px;
+            color: #333;
+        }
+
+        .modal-content p {
+            margin-bottom: 5px;
+            color: #555;
+        }
+    </style>
+</head>
+
+<body class="bg-gray-50">
+
+    <div class="max-w-6xl mx-auto p-6">
+        <div class="border border-slate-950 rounded-lg p-6">
+            <h1 class="text-2xl font-bold text-gray-900">Detalhes do Dia</h1>
+
+            <div class="mt-6">
+                <h2 class="text-lg font-semibold text-gray-800">Emoções Registradas:</h2>
+                <ul id="emotionList" class="mt-3 space-y-2 text-gray-700">
+                    <!-- A lista de emoções será inserida aqui via JavaScript -->
+                </ul>
+            </div>
+
+            <div class="mt-6">
+                <h2 class="text-lg font-semibold text-gray-800">Gráfico de Intensidade:</h2>
+                <canvas id="emotionChart" class="w-full mt-3" style="height: 300px;"></canvas>
+            </div>
+
+            <div class="mt-6 text-center">
+                <a href="javascript:history.back()" class="text-blue-500 hover:text-blue-700">Voltar para o Calendário</a>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Recupera a data da URL
+        const urlParams = new URLSearchParams(window.location.search);
+        const selectedDate = urlParams.get('date'); // Ex: '2025-02-10'
+
+        // Dados simulados de emoções
+        const emotionsData = {
+            '2025-02-10': ['Felicidade', 'Ansiedade'],
+            '2025-02-11': ['Tristeza'],
+            '2025-02-12': ['Felicidade', 'Raiva', 'Surpresa'],
+        };
+
+        // Descrições para cada emoção
+        const emotionDescriptions = {
+            'Felicidade': 'Sentimento de prazer ou alegria. Pode estar relacionado a conquistas, experiências positivas ou bons momentos.',
+            'Ansiedade': 'Sentimento de apreensão ou preocupação com o futuro. Pode causar desconforto e afetar o comportamento.',
+            'Tristeza': 'Emoção relacionada a perdas ou situações dolorosas. Frequentemente acompanha a sensação de desânimo ou impotência.',
+            'Raiva': 'Sentimento de frustração ou indignação, frequentemente causado por injustiças ou frustrações.',
+            'Surpresa': 'Reação emocional a eventos inesperados, geralmente causando uma mudança temporária no estado emocional.',
+        };
+
+        // Exibe as emoções no dia selecionado
+        const emotionList = document.getElementById('emotionList');
+        if (selectedDate && emotionsData[selectedDate]) {
+            emotionsData[selectedDate].forEach(emotion => {
+                const li = document.createElement('li');
+                li.classList.add('flex', 'items-center', 'space-x-3');
+                li.innerHTML = `
+                    <span class="font-semibold">${emotion}</span>
+                    <button onclick="showDescription('${emotion}')" class="text-blue-500 hover:text-blue-700 text-sm">Ver descrição</button>
+                `;
+                emotionList.appendChild(li);
+            });
+
+            // Criar o gráfico de intensidade
+            const ctx = document.getElementById('emotionChart').getContext('2d');
+            new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: emotionsData[selectedDate],
+                    datasets: [{
+                        label: 'Intensidade das Emoções',
+                        data: emotionsData[selectedDate].map(() => Math.floor(Math.random() * 5) + 1),
+                        backgroundColor: ['#38a169', '#e53e3e', '#f6ad55', '#fc8181', '#ecc94b'],
+                    }],
+                },
+                options: {
+                    responsive: true,
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            max: 5,
+                        }
+                    }
+                }
+            });
+        } else {
+            emotionList.innerHTML = '<li class="text-gray-500">Nenhuma emoção registrada para este dia.</li>';
+        }
+
+        // Função para exibir descrição da emoção
+        function showDescription(emotion) {
+            alert(emotionDescriptions[emotion] || 'Descrição não disponível.');
+        }
+    </script>
+
+</body>
+
+</html>

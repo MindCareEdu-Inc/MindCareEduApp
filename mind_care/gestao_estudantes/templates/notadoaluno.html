@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Boletim do Aluno</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100">
+
+    <div class="container mx-auto p-4">
+        <h1 class="text-3xl font-bold mb-4">Boletim Escolar</h1>
+
+        <div class="bg-white shadow-md rounded-lg p-6 mb-4">
+            <h2 class="text-2xl font-semibold mb-2">Dados do Aluno</h2>
+            <div class="grid grid-cols-2 gap-4">
+                <div>
+                    <p class="font-medium">Nome:</p>
+                    <p>João da Silva</p>
+                </div>
+                <div>
+                    <p class="font-medium">Turma:</p>
+                    <p>3º ano A</p>
+                </div>
+                <div>
+                    <p class="font-medium">Data de Nascimento:</p>
+                    <p>15/05/2008</p>
+                </div>
+                <div>
+                    <p class="font-medium">Responsável:</p>
+                    <p>Maria Souza</p>
+                </div>
+                <div>
+                    <p class="font-medium">Matricula:</p>
+                    <p>0000-00</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="bg-white shadow-md rounded-lg p-6">
+            <h2 class="text-2xl font-semibold mb-4">Notas por Matéria</h2>
+            <table class="min-w-full divide-y divide-gray-200">
+                <thead>
+                    <tr>
+                        <th class="px-4 py-2 text-left text-gray-500">Matéria</th>
+                        <th class="px-4 py-2 text-left text-gray-500">1º Bimestre</th>
+                        <th class="px-4 py-2 text-left text-gray-500">2º Bimestre</th>
+                        <th class="px-4 py-2 text-left text-gray-500">3º Bimestre</th>
+                        <th class="px-4 py-2 text-left text-gray-500">4º Bimestre</th>
+                        <th class="px-4 py-2 text-left text-gray-500">Média</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td class="px-4 py-2">Matemática</td>
+                        <td class="px-4 py-2">8.5</td>
+                        <td class="px-4 py-2">7.2</td>
+                        <td class="px-4 py-2">9.0</td>
+                        <td class="px-4 py-2">8.8</td>
+                        <td class="px-4 py-2 font-medium">8.4</td>
+                    </tr>
+                    <tr>
+                        <td class="px-4 py-2">Português</td>
+                        <td class="px-4 py-2">9.2</td>
+                        <td class="px-4 py-2">8.5</td>
+                        <td class="px-4 py-2">9.5</td>
+                        <td class="px-4 py-2">9.0</td>
+                        <td class="px-4 py-2 font-medium">9.1</td>
+                    </tr>
+                    <tr>
+                        <td class="px-4 py-2">História</td>
+                        <td class="px-4 py-2">7.8</td>
+                        <td class="px-4 py-2">8.0</td>
+                        <td class="px-4 py-2">8.2</td>
+                        <td class="px-4 py-2">7.5</td>
+                        <td class="px-4 py-2 font-medium">7.9</td>
+                    </tr>
+                    </tbody>
+            </table>
+        </div>
+    </div>
+
+</body>
+</html>

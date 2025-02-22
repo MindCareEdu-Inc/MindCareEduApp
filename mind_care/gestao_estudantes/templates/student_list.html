@@ -1,0 +1,64 @@
+{% extends 'base_generic.html' %}
+
+{% block title %}Lista de Estudantes{% endblock %}
+
+{% block content %}
+<h1 class="text-2xl md:text-3xl font-bold text-center my-4">Lista de Estudantes</h1>
+
+<!-- Barra de Pesquisa -->
+<div class="flex flex-col md:flex-row justify-between items-center mb-4 px-4 space-y-2 md:space-y-0">
+    <form method="get" class="w-full md:w-1/2">
+        <input type="text" name="q" placeholder="Pesquisar por nome..." 
+               value="{{ request.GET.q }}" 
+               class="w-full border border-gray-300 rounded px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500">
+    </form>
+    <a href="{% url 'student_create' %}" 
+        class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded w-full md:w-auto text-center">
+        Cadastrar Novo Estudante
+    </a>
+</div>
+
+<div class="overflow-x-auto max-w-full px-4">
+    <table class="w-full table-auto border-collapse border border-gray-300 shadow-lg text-sm md:text-base">
+        <thead>
+            <tr class="bg-gray-200 text-gray-700">
+                <th class="border border-gray-300 px-4 py-2">ID</th>
+                <th class="border border-gray-300 px-4 py-2">Nome</th>
+                <th class="border border-gray-300 px-4 py-2">Email</th>
+                <th class="border border-gray-300 px-4 py-2">Organização</th>
+                <th class="border border-gray-300 px-4 py-2">Ações</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for student in students %}
+            <tr class="hover:bg-gray-100 text-center">
+                <td class="border border-gray-300 px-2 py-2 md:px-4">{{ student.id }}</td>
+                <td class="border border-gray-300 px-2 py-2 md:px-4">{{ student.name }}</td>
+                <td class="border border-gray-300 px-2 py-2 md:px-4">{{ student.email }}</td>
+                <td class="border border-gray-300 px-2 py-2 md:px-4">{{ student.organization.name }}</td>
+                <td class="border border-gray-300 px-2 py-2 md:px-4">
+                    <form method="post" action="{% url 'student_list' %}" 
+                          onsubmit="return confirm('Tem certeza que deseja apagar este estudante?');">
+                        {% csrf_token %}
+                        <input type="hidden" name="student_id" value="{{ student.id }}">
+                        <button type="submit">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" 
+                                 stroke-width="1.5" stroke="currentColor" class="w-6 h-6 text-red-500 hover:text-red-700">
+                                <path stroke-linecap="round" stroke-linejoin="round" 
+                                      d="M19.5 9L18.3 19.125A2.25 2.25 0 0116.063 21H7.938A2.25 2.25 0 015.7 19.125L4.5 9m3.75 0V5.625A2.25 2.25 0 0110.5 3h3a2.25 2.25 0 012.25 2.625V9m-9 0h10.5" />
+                            </svg>
+                        </button>
+                    </form>
+                </td>
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="5" class="border border-gray-300 px-4 py-2 text-center text-gray-500">
+                    Nenhum estudante cadastrado.
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}
