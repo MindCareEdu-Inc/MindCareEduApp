@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard de Emoções</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <!-- jsPDF para exportação em PDF -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <!-- FileSaver.js para exportação em CSV -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.5/FileSaver.min.js"></script>
+    <style>
+        #sidebar {
+            position: fixed;
+            height: 100vh;
+            top: 0;
+            left: 0;
+            z-index: 1000;
+            transition: transform 0.3s ease-in-out;
+        }
+        #main-content {
+            margin-left: 16rem; /* Largura da sidebar */
+            transition: margin-left 0.3s ease-in-out;
+            overflow-y: auto;
+            height: 100vh;
+        }
+        #sidebar.collapsed {
+            transform: translateX(-100%);
+        }
+        #main-content.collapsed {
+            margin-left: 0;
+        }
+        .chart-container {
+            height: 250px; /* Altura fixa para os gráficos */
+            position: relative;
+        }
+    </style>
+</head>
+<body class="bg-gray-100 text-gray-800">
+    <div class="flex h-screen">
+        <!-- Barra Lateral (Sidebar) -->
+        <aside id="sidebar" class="w-64 bg-blue-900 text-white p-5 flex flex-col">
+            <h2 class="text-xl font-bold mb-6">Spike Admin</h2>
+            <nav>
+                <ul>
+                    <li class="mb-3"><a href="#" class="text-white">Dashboard</a></li>
+                    <li class="mb-3"><a href="#">Alert</a></li>
+                    <li class="mb-3"><a href="#">Button</a></li>
+                    <li class="mb-3"><a href="#">Cards</a></li>
+                    <li class="mb-3"><a href="#">Tables</a></li>
+                    <li class="mb-3"><a href="#">Login</a></li>
+                    <li class="mb-3"><a href="#">Register</a></li>
+                </ul>
+            </nav>
+        </aside>
+
+        <!-- Conteúdo Principal -->
+        <div id="main-content" class="flex-1 flex flex-col">
+            <!-- Navbar -->
+            <header class="bg-white shadow-md p-2 flex justify-between items-center rounded-lg">
+                <!-- Botão de alternância (visível em todas as telas) -->
+                <button id="toggleSidebar" class="text-blue-900 text-2xl focus:outline-none">
+                    ☰
+                </button>
+
+                <!-- Logo e Título -->
+                <div class="flex items-center space-x-4">
+                    <span class="text-lg font-semibold">Dashboard</span>
+                </div>
+
+                <!-- Menu Dropdown Moderno -->
+                <div class="relative">
+                    <button id="userMenuButton" class="flex items-center space-x-4 focus:outline-none">
+                        <img class="w-12 h-12 rounded-full border-2 border-gray-600" src="./oip.jpg" alt="Foto de Perfil" />
+                        <div class="text-sm text-gray-700">
+                            <p class="font-semibold">Luis Diogo</p>
+                        </div>
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                        </svg>
+                    </button>
+
+                    <!-- Dropdown Menu -->
+                    <div id="userMenu" class="hidden absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-md py-2">
+                        <a href="#" class="block px-4 py-2 text-gray-700 hover:bg-gray-100">Perfil</a>
+                        <a href="#" class="block px-4 py-2 text-gray-700 hover:bg-gray-100">Configurações</a>
+                        <a href="#" class="block px-4 py-2 text-gray-700 hover:bg-gray-100">Sair</a>
+                    </div>
+                </div>
+            </header>
+
+            <!-- Filtros e Pesquisa -->
+            <div class="p-4 md:p-6">
+                <div class="bg-white shadow-md rounded-lg p-4 flex flex-col md:flex-row space-y-4 md:space-y-0 md:space-x-4">
+                    <input id="searchInput" type="text" placeholder="Pesquisar aluno..." class="flex-1 p-2 border rounded-lg">
+                    <select id="filterEmotion" class="p-2 border rounded-lg">
+                        <option value="">Filtrar por emoção</option>
+                        <option value="Feliz">Feliz</option>
+                        <option value="Triste">Triste</option>
+                        <option value="Neutro">Neutro</option>
+                    </select>
+                    <button id="filterButton" class="bg-blue-900 text-white p-2 rounded-lg">Filtrar</button>
+                </div>
+            </div>
+
+            <!-- Cards -->
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 p-4 md:p-6">
+                <div class="bg-white shadow-md rounded-lg p-4 text-center">
+                    <h3 class="text-gray-600 font-bold">Total de Alunos</h3>
+                    <p class="text-3xl font-bold text-red-600">120</p>
+                </div>
+                <div class="bg-white shadow-md rounded-lg p-4 text-center">
+                    <h3 class="text-gray-600 font-bold">Emoções Registradas</h3>
+                    <p class="text-3xl font-bold text-blue-600">450</p>
+                </div>
+                <div class="bg-white shadow-md rounded-lg p-4 text-center">
+                    <h3 class="text-gray-600 font-bold">Alertas Emitidos</h3>
+                    <p class="text-3xl font-bold text-green-600">15</p>
+                </div>
+            </div>
+
+            <!-- Gráficos -->
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-4 p-4 md:p-6">
+                <div class="bg-white shadow-md rounded-lg p-4">
+                    <h2 class="text-xl font-semibold mb-4">Gráfico de Emoções</h2>
+                    <div class="chart-container">
+                        <canvas id="emotionChart"></canvas>
+                    </div>
+                </div>
+                <div class="bg-white shadow-md rounded-lg p-4">
+                    <h3 class="text-lg font-bold mb-4">Emoções ao Longo do Tempo</h3>
+                    <div class="chart-container">
+                        <canvas id="chart2"></canvas>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Tabela de Dados -->
+            <div class="p-4 md:p-6">
+                <div class="bg-white shadow-md rounded-lg p-4">
+                    <h3 class="text-lg font-bold mb-4">Detalhes das Emoções Registradas</h3>
+                    <div class="overflow-x-auto">
+                        <table id="emotionTable" class="w-full text-left">
+                            <thead>
+                                <tr>
+                                    <th class="p-2">Matrícula</th>
+                                    <th class="p-2">Aluno</th>
+                                    <th class="p-2">Emoção Predominante</th>
+                                    <th class="p-2">% Feliz</th>
+                                    <th class="p-2">% Triste</th>
+                                    <th class="p-2">% Neutro</th>
+                                    <th class="p-2">Data</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <!-- Dados serão preenchidos dinamicamente -->
+                            </tbody>
+                        </table>
+                    </div>
+                    <!-- Botões de Exportação -->
+                    <div class="mt-4 flex flex-col md:flex-row space-y-4 md:space-y-0 md:space-x-4">
+                        <button id="exportCSV" class="bg-green-600 text-white p-2 rounded-lg">Exportar para CSV</button>
+                        <button id="exportPDF" class="bg-red-600 text-white p-2 rounded-lg">Exportar para PDF</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Notificações -->
+            <div class="p-4 md:p-6">
+                <div class="bg-white shadow-md rounded-lg p-4">
+                    <h3 class="text-lg font-bold mb-4">Notificações Recentes</h3>
+                    <ul>
+                        <li class="border-t p-2">Novo alerta: Aluno está triste.</li>
+                        <li class="border-t p-2">Aluno registrou uma emoção neutra.</li>
+                        <!-- Adicione mais notificações conforme necessário -->
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script>
+        // Dados iniciais da tabela
+        const initialData = [
+            { matricula: "12345", aluno: "João Silva", emocaoPredominante: "Feliz", feliz: 70, triste: 20, neutro: 10, data: "2023-10-01" },
+            { matricula: "67890", aluno: "Maria Oliveira", emocaoPredominante: "Triste", feliz: 30, triste: 60, neutro: 10, data: "2023-10-02" },
+            { matricula: "11223", aluno: "Carlos Souza", emocaoPredominante: "Neutro", feliz: 20, triste: 30, neutro: 50, data: "2023-10-03" },
+            { matricula: "44556", aluno: "Ana Costa", emocaoPredominante: "Feliz", feliz: 80, triste: 10, neutro: 10, data: "2023-10-04" },
+            { matricula: "77889", aluno: "Pedro Rocha", emocaoPredominante: "Triste", feliz: 10, triste: 70, neutro: 20, data: "2023-10-05" },
+        ];
+
+        // Função para renderizar a tabela
+        function renderTable(data) {
+            const tableBody = document.querySelector("#emotionTable tbody");
+            tableBody.innerHTML = ""; // Limpa o conteúdo atual
+            data.forEach(item => {
+                const row = `
+                    <tr class="border-t">
+                        <td class="p-2">${item.matricula}</td>
+                        <td class="p-2">${item.aluno}</td>
+                        <td class="p-2">${item.emocaoPredominante}</td>
+                        <td class="p-2">${item.feliz}%</td>
+                        <td class="p-2">${item.triste}%</td>
+                        <td class="p-2">${item.neutro}%</td>
+                        <td class="p-2">${item.data}</td>
+                    </tr>
+                `;
+                tableBody.innerHTML += row;
+            });
+        }
+
+        // Função para filtrar os dados
+        function filterData() {
+            const searchTerm = document.getElementById("searchInput").value.toLowerCase();
+            const emotionFilter = document.getElementById("filterEmotion").value;
+
+            const filteredData = initialData.filter(item => {
+                const matchesSearch = item.aluno.toLowerCase().includes(searchTerm);
+                const matchesEmotion = emotionFilter ? item.emocaoPredominante === emotionFilter : true;
+                return matchesSearch && matchesEmotion;
+            });
+
+            renderTable(filteredData);
+        }
+
+        // Eventos de pesquisa e filtro
+        document.getElementById("searchInput").addEventListener("input", filterData);
+        document.getElementById("filterEmotion").addEventListener("change", filterData);
+        document.getElementById("filterButton").addEventListener("click", filterData);
+
+        // Renderizar a tabela com os dados iniciais
+        renderTable(initialData);
+
+        // Alternar Sidebar
+        document.getElementById('toggleSidebar').addEventListener('click', function() {
+            const sidebar = document.getElementById('sidebar');
+            const mainContent = document.getElementById('main-content');
+
+            sidebar.classList.toggle('collapsed');
+            mainContent.classList.toggle('collapsed');
+        });
+
+        // Alternar Menu Dropdown
+        document.getElementById('userMenuButton').addEventListener('click', function() {
+            const userMenu = document.getElementById('userMenu');
+            userMenu.classList.toggle('hidden');
+        });
+
+        // Fechar Menu ao clicar fora
+        window.addEventListener('click', function(event) {
+            const userMenu = document.getElementById('userMenu');
+            const userMenuButton = document.getElementById('userMenuButton');
+            if (!userMenuButton.contains(event.target) && !userMenu.contains(event.target)) {
+                userMenu.classList.add('hidden');
+            }
+        });
+
+        // Gráficos
+        window.onload = function() {
+            const ctx = document.getElementById('emotionChart').getContext('2d');
+            new Chart(ctx, {
+                type: 'pie',
+                data: {
+                    labels: ['Feliz', 'Triste', 'Neutro'],
+                    datasets: [{
+                        data: [70, 20, 10],
+                        backgroundColor: ['rgba(75, 192, 192, 0.6)', 'rgba(255, 99, 132, 0.6)', 'rgba(255, 205, 86, 0.6)'],
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: { position: 'top' }
+                    }
+                }
+            });
+
+            const chart2Ctx = document.getElementById('chart2').getContext('2d');
+            new Chart(chart2Ctx, {
+                type: 'line',
+                data: {
+                    labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'],
+                    datasets: [{
+                        label: 'Emoções',
+                        data: [65, 59, 80, 81, 56, 55],
+                        backgroundColor: 'rgba(54, 162, 235, 0.6)',
+                        borderColor: 'rgba(54, 162, 235, 1)',
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: { position: 'top' }
+                    }
+                }
+            });
+        };
+
+        // Exportar para CSV
+        document.getElementById('exportCSV').addEventListener('click', function() {
+            const data = [
+                ["Matrícula", "Aluno", "Emoção Predominante", "% Feliz", "% Triste", "% Neutro", "Data"],
+                ...initialData.map(item => [item.matricula, item.aluno, item.emocaoPredominante, item.feliz, item.triste, item.neutro, item.data])
+            ];
+            let csvContent = "data:text/csv;charset=utf-8," + data.map(row => row.join(",")).join("\n");
+            const encodedUri = encodeURI(csvContent);
+            const link = document.createElement("a");
+            link.setAttribute("href", encodedUri);
+            link.setAttribute("download", "dados_emocoes.csv");
+            document.body.appendChild(link);
+            link.click();
+        });
+
+        // Exportar para PDF
+        document.getElementById('exportPDF').addEventListener('click', function() {
+            const { jsPDF } = window.jspdf;
+            const doc = new jsPDF();
+            doc.text("Detalhes das Emoções Registradas", 10, 10);
+            doc.autoTable({
+                head: [["Matrícula", "Aluno", "Emoção Predominante", "% Feliz", "% Triste", "% Neutro", "Data"]],
+                body: initialData.map(item => [item.matricula, item.aluno, item.emocaoPredominante, item.feliz, item.triste, item.neutro, item.data])
+            });
+            doc.save("dados_emocoes.pdf");
+        });
+    </script>
+</body>
+</html>

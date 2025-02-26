@@ -1,0 +1,63 @@
+{% extends 'base_generic.html' %}
+
+{% block title %}Cadastro de Servidor{% endblock %}
+
+{% block content %}
+<div class="bg-gray-100 flex items-center justify-center min-h-screen">
+    <div class="w-full max-w-lg bg-white p-8 rounded-lg shadow-lg">
+        <h1 class="text-2xl font-bold text-gray-700 mb-6 text-center">Cadastro de Servidor</h1>
+        <form method="POST" enctype="multipart/form-data">
+          {% csrf_token %}
+          <div class="space-y-6">
+              <!-- Nome -->
+              <div>
+                  <label for="{{ form.name.id_for_label }}" class="block text-sm font-medium text-gray-700">Nome</label>
+                  <input type="text" id="{{ form.name.id_for_label }}" name="name" value="{{ form.name.value|default:'' }}" placeholder="Nome do servidor" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm">
+              </div>
+      
+              <!-- Telefone -->
+              <div>
+                  <label for="{{ form.phone.id_for_label }}" class="block text-sm font-medium text-gray-700">Telefone</label>
+                  <input type="text" id="{{ form.phone.id_for_label }}" name="phone" value="{{ form.phone.value|default:'' }}" placeholder="Numero do servidor" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm">
+              </div>
+      
+              <!-- E-mail -->
+              <div>
+                  <label for="{{ form.email.id_for_label }}" class="block text-sm font-medium text-gray-700">E-mail</label>
+                  <input type="email" id="{{ form.email.id_for_label }}" name="email" value="{{ form.email.value|default:'' }}" placeholder="Email do servidor" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm">
+              </div>
+      
+              <!-- Role -->
+              <div>
+                  <label for="{{ form.role.id_for_label }}" class="block text-sm font-medium text-gray-700">Função</label>
+                  <select id="{{ form.role.id_for_label }}" name="role" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm">
+                      <option value="admin" {% if form.role.value == 'admin' %}selected{% endif %}>Admin</option>
+                      <option value="staff" {% if form.role.value == 'staff' %}selected{% endif %}>Staff</option>
+                  </select>
+              </div>
+      
+              <!-- Organização -->
+              <div>
+                  <label for="{{ form.organization.id_for_label }}" class="block text-sm font-medium text-gray-700">Organização</label>
+                  <select id="{{ form.organization.id_for_label }}" name="organization" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm">
+                      {% for org in organizations %}
+                          <option value="{{ org.id }}" {% if form.organization.value == org.id %}selected{% endif %}>{{ org.name }}</option>
+                      {% endfor %}
+                  </select>
+              </div>
+      
+              <!-- Ativo -->
+              <div class="flex items-center">
+                  <input type="checkbox" id="{{ form.active.id_for_label }}" name="active" {% if form.active.value %}checked{% endif %} class="h-4 w-4 text-indigo-600 border-gray-300 rounded focus:ring-indigo-500">
+                  <label for="{{ form.active.id_for_label }}" class="ml-2 text-sm text-gray-700">Ativo</label>
+              </div>
+      
+              <button type="submit" class="w-full px-4 py-2 text-white bg-indigo-600 hover:bg-indigo-700 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 sm:text-sm">
+                  Salvar
+              </button>
+          </div>
+      </form>      
+    </div>
+</div>
+{% endblock %}
+

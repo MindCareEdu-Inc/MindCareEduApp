@@ -1,0 +1,162 @@
+[
+  {
+      "matricula": "10001",
+      "nome": "Carlos Souza",
+      "telefone": "11987654321",
+      "email": "carlos.souza@email.com",
+      "genero": "M",
+      "foto": null
+  },
+  {
+      "matricula": "10002",
+      "nome": "Mariana Lima",
+      "telefone": "21976543210",
+      "email": "mariana.lima@email.com",
+      "genero": "F",
+      "foto": null
+  },
+  {
+      "matricula": "10003",
+      "nome": "Fernando Almeida",
+      "telefone": "31965432109",
+      "email": "fernando.almeida@email.com",
+      "genero": "M",
+      "foto": null
+  },
+  {
+      "matricula": "10004",
+      "nome": "Aline Ferreira",
+      "telefone": "41954321098",
+      "email": "aline.ferreira@email.com",
+      "genero": "F",
+      "foto": null
+  },
+  {
+      "matricula": "10005",
+      "nome": "Roberto Castro",
+      "telefone": "51943210987",
+      "email": "roberto.castro@email.com",
+      "genero": "M",
+      "foto": null
+  },
+  {
+      "matricula": "10006",
+      "nome": "Juliana Mendes",
+      "telefone": "61932109876",
+      "email": "juliana.mendes@email.com",
+      "genero": "F",
+      "foto": null
+  },
+  {
+      "matricula": "10007",
+      "nome": "Ricardo Nogueira",
+      "telefone": "71921098765",
+      "email": "ricardo.nogueira@email.com",
+      "genero": "M",
+      "foto": null
+  },
+  {
+      "matricula": "10008",
+      "nome": "Tatiane Oliveira",
+      "telefone": "81910987654",
+      "email": "tatiane.oliveira@email.com",
+      "genero": "F",
+      "foto": null
+  },
+  {
+      "matricula": "10009",
+      "nome": "Gabriel Santos",
+      "telefone": "91909876543",
+      "email": "gabriel.santos@email.com",
+      "genero": "M",
+      "foto": null
+  },
+  {
+      "matricula": "10010",
+      "nome": "Ana Paula Ribeiro",
+      "telefone": "11908765432",
+      "email": "ana.ribeiro@email.com",
+      "genero": "F",
+      "foto": null
+  },
+  {
+      "matricula": "10011",
+      "nome": "Marcelo Vieira",
+      "telefone": "21907654321",
+      "email": "marcelo.vieira@email.com",
+      "genero": "M",
+      "foto": null
+  },
+  {
+      "matricula": "10012",
+      "nome": "Camila Rocha",
+      "telefone": "31906543210",
+      "email": "camila.rocha@email.com",
+      "genero": "F",
+      "foto": null
+  },
+  {
+      "matricula": "10013",
+      "nome": "Thiago Martins",
+      "telefone": "41905432109",
+      "email": "thiago.martins@email.com",
+      "genero": "M",
+      "foto": null
+  },
+  {
+      "matricula": "10014",
+      "nome": "Bruna Cardoso",
+      "telefone": "51904321098",
+      "email": "bruna.cardoso@email.com",
+      "genero": "F",
+      "foto": null
+  },
+  {
+      "matricula": "10015",
+      "nome": "Vinícius Pereira",
+      "telefone": "61903210987",
+      "email": "vinicius.pereira@email.com",
+      "genero": "M",
+      "foto": null
+  },
+  {
+      "matricula": "10016",
+      "nome": "Larissa Gomes",
+      "telefone": "71902109876",
+      "email": "larissa.gomes@email.com",
+      "genero": "F",
+      "foto": null
+  },
+  {
+      "matricula": "10017",
+      "nome": "Eduardo Lopes",
+      "telefone": "81901098765",
+      "email": "eduardo.lopes@email.com",
+      "genero": "M",
+      "foto": null
+  },
+  {
+      "matricula": "10018",
+      "nome": "Priscila Farias",
+      "telefone": "91900987654",
+      "email": "priscila.farias@email.com",
+      "genero": "F",
+      "foto": null
+  },
+  {
+      "matricula": "10019",
+      "nome": "Felipe Monteiro",
+      "telefone": "11909876541",
+      "email": "felipe.monteiro@email.com",
+      "genero": "M",
+      "foto": null
+  },
+  {
+      "matricula": "10020",
+      "nome": "Vanessa Moreira",
+      "telefone": "21908765432",
+      "email": "vanessa.moreira@email.com",
+      "genero": "F",
+      "foto": null
+  }
+]
