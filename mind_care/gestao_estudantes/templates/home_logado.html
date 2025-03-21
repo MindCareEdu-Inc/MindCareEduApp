@@ -1,0 +1,350 @@
+{% extends 'base_generic.html' %}
+
+{% block title %}Home{% endblock %}
+
+{% block content %}
+
+
+{% if user.is_authenticated %}
+{% if request.session.user_type == "admin" %}
+    <!-- Filtros e Pesquisa -->
+<div class="p-4 md:p-6">
+    <div class="bg-white shadow-md rounded-lg p-4 flex flex-col md:flex-row space-y-4 md:space-y-0 md:space-x-4">
+        <input id="searchCompany" type="text" placeholder="Pesquisar empresa..." class="flex-1 p-2 border rounded-lg">
+        <select id="filterServer" class="p-2 border rounded-lg">
+            <option value="">Filtrar por servidor</option>
+            <option value="Servidor 1">Servidor 1</option>
+            <option value="Servidor 2">Servidor 2</option>
+            <option value="Servidor 3">Servidor 3</option>
+        </select>
+        <button id="filterButton" class="bg-[#87CEEB] text-white p-2 rounded-lg">Filtrar</button>
+    </div>
+</div>
+
+<!-- Cards -->
+<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 p-4 md:p-6">
+    <div class="bg-white shadow-md rounded-lg p-4 text-center">
+        <h3 class="text-gray-600 font-bold">Total de Empresas</h3>
+        <p class="text-3xl font-bold text-[#2C3E50]">50</p>
+    </div>
+    <div class="bg-white shadow-md rounded-lg p-4 text-center">
+        <h3 class="text-gray-600 font-bold">Total de Servidores</h3>
+        <p class="text-3xl font-bold text-[#4A6FA5]">10</p>
+    </div>
+    <div class="bg-white shadow-md rounded-lg p-4 text-center">
+        <h3 class="text-gray-600 font-bold">Usuários Ativos</h3>
+        <p class="text-3xl font-bold text-[#87CEEB]">200</p>
+    </div>
+</div>
+
+<!-- Tabela de Empresas -->
+<div class="p-4 md:p-6">
+    <div class="bg-white shadow-md rounded-lg p-4">
+        <h3 class="text-lg font-bold mb-4">Empresas Cadastradas</h3>
+        <div class="overflow-x-auto">
+            <table id="companyTable" class="w-full text-left">
+                <thead>
+                    <tr>
+                        <th class="p-2">ID</th>
+                        <th class="p-2">Empresa</th>
+                        <th class="p-2">Servidores</th>
+                        <th class="p-2">Usuários</th>
+                        <th class="p-2">Data de Cadastro</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- Dados serão preenchidos dinamicamente -->
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<script>
+    const companyData = [
+        { id: "001", empresa: "Empresa A", servidor: 1, usuarios: 25, data: "2025-01-01" },
+        { id: "002", empresa: "Empresa B", servidor: 2, usuarios: 40, data: "2024-12-17" },
+        { id: "003", empresa: "Empresa C", servidor: 1, usuarios: 35, data: "2024-12-20" },
+        { id: "004", empresa: "Empresa D", servidor: 3, usuarios: 50, data: "2024-12-05" }
+    ];
+
+    function renderCompanyTable(data) {
+        const tableBody = document.querySelector("#companyTable tbody");
+        tableBody.innerHTML = "";
+        data.forEach(item => {
+            const row = `
+                <tr class="border-t">
+                    <td class="p-2">${item.id}</td>
+                    <td class="p-2">${item.empresa}</td>
+                    <td class="p-2">${item.servidor}</td>
+                    <td class="p-2">${item.usuarios}</td>
+                    <td class="p-2">${item.data}</td>
+                </tr>
+            `;
+            tableBody.innerHTML += row;
+        });
+    }
+
+    function filterCompanyData() {
+        const searchTerm = document.getElementById("searchCompany").value.toLowerCase();
+        const serverFilter = document.getElementById("filterServer").value;
+
+        const filteredData = companyData.filter(item => {
+            const matchesSearch = item.empresa.toLowerCase().includes(searchTerm);
+            const matchesServer = serverFilter ? item.servidor === serverFilter : true;
+            return matchesSearch && matchesServer;
+        });
+
+        renderCompanyTable(filteredData);
+    }
+
+    document.getElementById("searchCompany").addEventListener("input", filterCompanyData);
+    document.getElementById("filterServer").addEventListener("change", filterCompanyData);
+    document.getElementById("filterButton").addEventListener("click", filterCompanyData);
+
+    renderCompanyTable(companyData);
+</script>
+
+
+{% elif request.session.user_type == "server" %}
+
+<!-- Filtros e Pesquisa -->
+<div class="p-4 md:p-6">
+    <div class="bg-white shadow-md rounded-lg p-4 flex flex-col md:flex-row space-y-4 md:space-y-0 md:space-x-4">
+        <input id="searchInput" type="text" placeholder="Pesquisar aluno..." class="flex-1 p-2 border rounded-lg">
+        <select id="filterEmotion" class="p-2 border rounded-lg">
+            <option value="">Filtrar por emoção</option>
+            <option value="Feliz">Feliz</option>
+            <option value="Triste">Triste</option>
+            <option value="Neutro">Neutro</option>
+        </select>
+        <button id="filterButton" class="bg-[#87CEEB] text-white p-2 rounded-lg">Filtrar</button>
+    </div>
+</div>
+
+<!-- Cards -->
+<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 p-4 md:p-6">
+    <div class="bg-white shadow-md rounded-lg p-4 text-center">
+        <h3 class="text-gray-600 font-bold">Total de Alunos</h3>
+        <p class="text-3xl font-bold text-[#2C3E50]">168</p>
+    </div>
+    <div class="bg-white shadow-md rounded-lg p-4 text-center">
+        <h3 class="text-gray-600 font-bold">Emoções Registradas</h3>
+        <p class="text-3xl font-bold text-[#4A6FA5]">427</p>
+    </div>
+    <div class="bg-white shadow-md rounded-lg p-4 text-center">
+        <h3 class="text-gray-600 font-bold">Alertas Emitidos</h3>
+        <p class="text-3xl font-bold text-[#87CEEB]">98</p>
+    </div>
+</div>
+
+<!-- Gráficos -->
+<div class="grid grid-cols-1 lg:grid-cols-2 gap-4 p-4 md:p-6">
+    <div class="bg-white shadow-md rounded-lg p-4">
+        <h2 class="text-xl font-semibold mb-4">Gráfico de Emoções</h2>
+        <div class="chart-container">
+            <canvas id="emotionChart"></canvas>
+        </div>
+    </div>
+    <div class="bg-white shadow-md rounded-lg p-4">
+        <h3 class="text-lg font-bold mb-4">Emoções ao Longo do Tempo</h3>
+        <div class="chart-container">
+            <canvas id="chart2"></canvas>
+        </div>
+    </div>
+</div>
+
+<!-- Tabela de Dados -->
+<div class="p-4 md:p-6">
+    <div class="bg-white shadow-md rounded-lg p-4">
+        <h3 class="text-lg font-bold mb-4">Detalhes das Emoções Registradas</h3>
+        <div class="overflow-x-auto">
+            <table id="emotionTable" class="w-full text-left">
+                <thead>
+                    <tr>
+                        <th class="p-2">Matrícula</th>
+                        <th class="p-2">Aluno</th>
+                        <th class="p-2">Emoção Predominante</th>
+                        <th class="p-2">% Feliz</th>
+                        <th class="p-2">% Triste</th>
+                        <th class="p-2">% Neutro</th>
+                        <th class="p-2">Data</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- Dados serão preenchidos dinamicamente -->
+                </tbody>
+            </table>
+        </div>
+        <!-- Botões de Exportação -->
+        <div class="mt-4 flex flex-col md:flex-row space-y-4 md:space-y-0 md:space-x-4">
+            <button id="exportCSV" class="bg-[#2C3E50] text-white p-2 rounded-lg">Exportar para CSV</button>
+            <button id="exportPDF" class="bg-[#4A6FA5] text-white p-2 rounded-lg">Exportar para PDF</button>
+        </div>
+    </div>
+</div>
+
+<!-- Notificações -->
+<div class="p-4 md:p-6">
+    <div class="bg-white shadow-md rounded-lg p-4">
+        <h3 class="text-lg font-bold mb-4">Notificações Recentes</h3>
+        <ul>
+            <li class="border-t p-2">Novo alerta: Aluno está triste.</li>
+            <li class="border-t p-2">Aluno registrou uma emoção neutra.</li>
+            <!-- Adicione mais notificações conforme necessário -->
+        </ul>
+    </div>
+</div>
+</div>
+<script>
+    // Dados iniciais da tabela
+    const initialData = [
+            { matricula: "12345", aluno: "João Silva", emocaoPredominante: "Feliz", feliz: 72.5, triste: 18.3, neutro: 9.2, data: "2025-03-19" },
+            { matricula: "67890", aluno: "Maria Oliveira", emocaoPredominante: "Triste", feliz: 28.4, triste: 61.7, neutro: 9.9, data: "2025-03-14" },
+            { matricula: "11223", aluno: "Carlos Souza", emocaoPredominante: "Neutro", feliz: 21.8, triste: 29.5, neutro: 48.7, data: "2025-03-13" },
+            { matricula: "44556", aluno: "Ana Costa", emocaoPredominante: "Feliz", feliz: 79.3, triste: 11.1, neutro: 9.6, data: "2025-03-13" },
+            { matricula: "77889", aluno: "Pedro Rocha", emocaoPredominante: "Triste", feliz: 12.7, triste: 68.2, neutro: 19.1, data: "2025-03-13" },
+            { matricula: "99887", aluno: "Sofia Lima", emocaoPredominante: "Feliz", feliz: 83.9, triste: 9.5, neutro: 6.6, data: "2025-03-13" },
+            { matricula: "66554", aluno: "Fernando Alves", emocaoPredominante: "Neutro", feliz: 35.2, triste: 27.8, neutro: 37.0, data: "2025-03-13" },
+            { matricula: "22334", aluno: "Larissa Mendes", emocaoPredominante: "Feliz", feliz: 74.6, triste: 15.3, neutro: 10.1, data: "2025-03-12" },
+            { matricula: "55677", aluno: "Ricardo Pereira", emocaoPredominante: "Triste", feliz: 18.9, triste: 65.4, neutro: 15.7, data: "2025-03-11" },
+            { matricula: "33445", aluno: "Camila Fernandes", emocaoPredominante: "Neutro", feliz: 29.3, triste: 33.8, neutro: 36.9, data: "2025-03-10" },
+            { matricula: "88990", aluno: "Gustavo Nunes", emocaoPredominante: "Feliz", feliz: 82.1, triste: 10.2, neutro: 7.7, data: "2025-03-12" },
+            { matricula: "77112", aluno: "Beatriz Ramos", emocaoPredominante: "Triste", feliz: 15.4, triste: 70.6, neutro: 14.0, data: "2025-03-12" },
+            { matricula: "66223", aluno: "Vinícius Matos", emocaoPredominante: "Neutro", feliz: 32.5, triste: 25.1, neutro: 42.4, data: "2025-03-07" },
+            { matricula: "55441", aluno: "Natália Borges", emocaoPredominante: "Feliz", feliz: 76.7, triste: 13.8, neutro: 9.5, data: "2025-03-02" },
+            { matricula: "99812", aluno: "Rodrigo Santos", emocaoPredominante: "Triste", feliz: 20.6, triste: 62.9, neutro: 16.5, data: "2025-02-20" },
+            { matricula: "66789", aluno: "Aline Costa", emocaoPredominante: "Neutro", feliz: 27.4, triste: 35.6, neutro: 37.0, data: "2025-02-19" },
+            { matricula: "44567", aluno: "Bruno Martins", emocaoPredominante: "Feliz", feliz: 80.2, triste: 12.5, neutro: 7.3, data: "2025-02-17" },
+            { matricula: "33221", aluno: "Juliana Almeida", emocaoPredominante: "Triste", feliz: 19.3, triste: 66.8, neutro: 13.9, data: "2025-02-12" },
+            { matricula: "77821", aluno: "Lucas Teixeira", emocaoPredominante: "Neutro", feliz: 30.7, triste: 28.4, neutro: 40.9, data: "2025-02-10" }
+        ];
+
+    // Função para renderizar a tabela
+    function renderTable(data) {
+        const tableBody = document.querySelector("#emotionTable tbody");
+        tableBody.innerHTML = ""; // Limpa o conteúdo atual
+        data.forEach(item => {
+            const row = `
+                <tr class="border-t">
+                    <td class="p-2">${item.matricula}</td>
+                    <td class="p-2">${item.aluno}</td>
+                    <td class="p-2">${item.emocaoPredominante}</td>
+                    <td class="p-2">${item.feliz}%</td>
+                    <td class="p-2">${item.triste}%</td>
+                    <td class="p-2">${item.neutro}%</td>
+                    <td class="p-2">${item.data}</td>
+                </tr>
+            `;
+            tableBody.innerHTML += row;
+        });
+    }
+
+    // Função para filtrar os dados
+    function filterData() {
+        const searchTerm = document.getElementById("searchInput").value.toLowerCase();
+        const emotionFilter = document.getElementById("filterEmotion").value;
+
+        const filteredData = initialData.filter(item => {
+            const matchesSearch = item.aluno.toLowerCase().includes(searchTerm);
+            const matchesEmotion = emotionFilter ? item.emocaoPredominante === emotionFilter : true;
+            return matchesSearch && matchesEmotion;
+        });
+
+        renderTable(filteredData);
+    }
+
+    // Eventos de pesquisa e filtro
+    document.getElementById("searchInput").addEventListener("input", filterData);
+    document.getElementById("filterEmotion").addEventListener("change", filterData);
+    document.getElementById("filterButton").addEventListener("click", filterData);
+
+    // Renderizar a tabela com os dados iniciais
+    renderTable(initialData);
+
+    // Fechar Menu ao clicar fora
+    window.addEventListener('click', function (event) {
+        const userMenu = document.getElementById('userMenu');
+        const userMenuButton = document.getElementById('userMenuButton');
+        if (!userMenuButton.contains(event.target) && !userMenu.contains(event.target)) {
+            userMenu.classList.add('hidden');
+        }
+    });
+
+    // Gráficos
+    window.onload = function () {
+        const ctx = document.getElementById('emotionChart').getContext('2d');
+        new Chart(ctx, {
+            type: 'pie',
+            data: {
+                labels: ['Feliz', 'Triste', 'Neutro'],
+                datasets: [{
+                    data: [70, 20, 10],
+                    backgroundColor: ['#A8D5E2', '#4A6FA5', '#87CEEB'],
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: { position: 'top' }
+                }
+            }
+        });
+
+        const chart2Ctx = document.getElementById('chart2').getContext('2d');
+        new Chart(chart2Ctx, {
+            type: 'line',
+            data: {
+                labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'],
+                datasets: [{
+                    label: 'Emoções',
+                    data: [65, 59, 80, 0, 0, 0],
+                    backgroundColor: 'rgba(54, 162, 235, 0.6)',
+                    borderColor: 'rgba(54, 162, 235, 1)',
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: { position: 'top' }
+                }
+            }
+        });
+    };
+
+    // Exportar para CSV
+    document.getElementById('exportCSV').addEventListener('click', function () {
+        const data = [
+            ["Matrícula", "Aluno", "Emoção Predominante", "% Feliz", "% Triste", "% Neutro", "Data"],
+            ...initialData.map(item => [item.matricula, item.aluno, item.emocaoPredominante, item.feliz, item.triste, item.neutro, item.data])
+        ];
+        let csvContent = "data:text/csv;charset=utf-8," + data.map(row => row.join(",")).join("\n");
+        const encodedUri = encodeURI(csvContent);
+        const link = document.createElement("a");
+        link.setAttribute("href", encodedUri);
+        link.setAttribute("download", "dados_emocoes.csv");
+        document.body.appendChild(link);
+        link.click();
+    });
+
+    // Exportar para PDF
+    document.getElementById('exportPDF').addEventListener('click', function () {
+        const { jsPDF } = window.jspdf;
+        const doc = new jsPDF();
+        doc.text("Detalhes das Emoções Registradas", 10, 10);
+        doc.autoTable({
+            head: [["Matrícula", "Aluno", "Emoção Predominante", "% Feliz", "% Triste", "% Neutro", "Data"]],
+            body: initialData.map(item => [item.matricula, item.aluno, item.emocaoPredominante, item.feliz, item.triste, item.neutro, item.data])
+        });
+        doc.save("dados_emocoes.pdf");
+    });
+</script>
+
+{% endif %}
+{% endif %}
+
+{% endblock %}

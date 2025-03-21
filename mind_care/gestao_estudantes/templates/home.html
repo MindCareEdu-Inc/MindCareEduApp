@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    {% load static %}
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Mind Care{% endblock %}</title>
+    <link rel="stylesheet" type="text/css" href="{% static 'style.css' %}">
+    <link href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet">
+    <script src="https://unpkg.com/typed.js@2.1.0/dist/typed.umd.js"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'azul-claro': '#87CEEB',
+                        'branco': '#FFFFFF',
+                        'cinza': '#F0F0F0',
+                    },
+                    keyframes: {
+                        slideRight: {
+                            '0%': { transform: 'translateX(-100px)', opacity: '0' },
+                            '100%': { transform: 'translateX(0)', opacity: '1' },
+                        },
+                        slideLeft: {
+                            '0%': { transform: 'translateX(100px)', opacity: '0' },
+                            '100%': { transform: 'translateX(0)', opacity: '1' },
+                        },
+                        slideTop: {
+                            '0%': { transform: 'translateY(100px)', opacity: '0' },
+                            '100%': { transform: 'translateY(0)', opacity: '1' },
+                        },
+                        slideBottom: {
+                            '0%': { transform: 'translateY(-100px)', opacity: '0' },
+                            '100%': { transform: 'translateY(0)', opacity: '1' },
+                        },
+                    },
+                    animation: {
+                        'slide-right': 'slideRight 1s ease forwards',
+                        'slide-left': 'slideLeft 1s ease forwards',
+                        'slide-top': 'slideTop 0.5s ease forwards',
+                        'slide-bottom': 'slideBottom 1s ease forwards',
+                    },
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-gradient-to-br from-white-900 via-gray-800 to-gray-900 text-black min-h-screen font-sans">
+    <header class="flex items-center justify-between px-6 py-4 bg-cyan-600 text-white backdrop-blur-lg shadow-lg">
+        <!-- Nome da empresa -->
+        <a href="#" class="logo flex items-center text-2xl font-semibold cursor-default opacity-0 animate-slide-left delay-500">
+            <img src="https://github.com/dlcantanhede/imagens-mindcare/blob/main/imagens-mindcare/logo.png?raw=true" alt="Logo" class="w-16 mr-3.5">
+            <h2 class="text-xl font-bold mb-1 flex">Mind <p class="text-xl font-bold mb-1 text-gray-700 px-2">Care</p><p>Edu</p></h2>
+            
+        </a>
+        
+        <!-- Menu de navegação visível apenas em telas maiores (desktop) -->
+        <nav class="hidden md:flex gap-8 text-lg animate-slide-bottom">
+            <a href="{% url 'home' %}" class="hover:text-cyan-400">Home</a>
+            <a href="https://wa.me/5598984401427" class="hover:text-cyan-400">Contato</a>
+            
+            {% if user.is_authenticated %}
+                {% if request.session.user_type == "admin" %}
+                    <a href="{% url 'list_organizations' %}" class="hover:text-cyan-400">Listar Organizações</a>
+                    <a href="{% url 'create_organization' %}" class="hover:text-cyan-400">Cadastrar Nova Organização</a>
+                    <a href="{% url 'server_create' %}" class="hover:text-cyan-400">Novo Servidor</a>
+                    <a href="{% url 'server_list' %}" class="hover:text-cyan-400">Listar Servidor</a>
+                    
+                {% elif request.session.user_type == "server" %}
+                    <a href="{% url 'student_list' %}" class="hover:text-cyan-400">Listar Alunos</a>
+                    <a href="{% url 'student_create' %}" class="hover:text-cyan-400">Novo Estudante</a>
+                    <a href="{% url 'relatorios-list' %}" class="hover:text-cyan-400">Relatórios</a>
+                {% endif %}
+                <a href="{% url 'minha_conta' %}" class="px-3 py-1 bg-cyan-500 text-gray-900 font-semibold rounded-full shadow-md hover:bg-cyan-400">Conta</a>
+            {% else %}
+                <a href="{% url 'login' %}" class="px-3 py-1 bg-cyan-400 text-gray-900 font-semibold rounded-full shadow-md hover:bg-cyan-300">Login</a>
+            {% endif %}
+        </nav>
+        
+        <!-- Botão de menu para dispositivos móveis -->
+        <button id="menuToggle" class="block md:hidden text-2xl text-white">☰</button>
+    </header>
+    
+    <!-- Menu de navegação para mobile -->
+    <div id="mobileMenu"
+        class="hidden md:hidden bg-gray-800/90 fixed inset-0 z-50 flex flex-col items-center gap-8 pt-20">
+        
+        <a href="{% url 'home' %}" class="text-lg text-white hover:text-azul-claro">Home</a>
+        <a href="https://wa.me/5598984401427" class="text-lg text-white hover:text-azul-claro">Contato</a>
+        
+        {% if user.is_authenticated %}
+            {% if request.session.user_type == "admin" %}
+                <a href="{% url 'list_organizations' %}" class="text-lg text-white hover:text-blue-900/80">Listar Organizações</a>
+                <a href="{% url 'create_organization' %}" class="text-lg text-white hover:text-blue-900/80">Cadastrar Nova Organização</a>
+                <a href="{% url 'server_create' %}" class="text-lg text-white hover:text-blue-900/80">Novo Servidor</a>
+                <a href="{% url 'server_list' %}" class="text-lg text-white hover:text-blue-900/80">Listar Servidor</a>
+            {% elif request.session.user_type == "server" %}
+                <a href="{% url 'student_list' %}" class="text-lg text-white hover:text-blue-900/80">Listar Alunos</a>
+                <a href="{% url 'student_create' %}" class="text-lg text-white hover:text-blue-900/80">Novo Estudante</a>
+                <a href="{% url 'relatorios-list' %}" class="text-lg text-white hover:text-blue-900/80">Relatórios</a>
+            {% endif %}
+        <a href="{% url 'minha_conta' %}" class="px-3 py-1 bg-cyan-500 text-gray-900 font-semibold rounded-full shadow-md hover:bg-cyan-400">Conta</a>
+        {% else %}
+            <a href="{% url 'login' %}" class="px-3 py-1 bg-cyan-500 text-gray-900 font-semibold rounded-full shadow-md hover:bg-cyan-400">Login</a>
+        {% endif %}
+    </div>
+{% if messages %}
+    <div class="mt-4">
+        {% for message in messages %}
+            <p class="text-sm text-center {% if message.tags == 'error' %}text-red-600{% else %}text-green-600{% endif %}">
+                {{ message }}
+            </p>
+        {% endfor %}
+    </div>
+{% endif %}
+{% load static %}
+<style>
+
+</style>
+<section id="home" class="home relative w-full h-screen flex justify-center items-center px-10 pt-16 z-1 md:flex-row flex-col-reverse text-center md:text-left">
+    <div class="home-content max-w-full md:max-w-1/2 text-azul-escuro text-center md:text-left">
+        <h3 class="text-xl font-semibold opacity-0 animate-slide-bottom delay-700">Bem-vindo ao</h3>
+        <h1 class="text-4xl font-semibold my-0.5 opacity-0 animate-slide-right delay-1000">Mindcare Edu</h1>
+        <h3 class="text-xl font-semibold">Uma ferramenta de análise de sentimentos</h3>
+        <p class="text-lg opacity-0 animate-slide-left delay-1000">Identificando problemas de saúde mental em alunos <br>e promovendo um ambiente escolar mais saudável.</p>
+        <p class="text-lg opacity-0 animate-slide-left delay-1200">Acreditamos que a tecnologia pode ser uma aliada poderosa na <br>identificação precoce de dificuldades emocionais.</p></p>
+        <p class="text-xl font-semibold"><span class="text"></span></p>
+        <div class="home-sci mt-7 flex justify-center md:justify-start">
+            <a href="#" class="inline-flex justify-center items-center w-10 h-10 bg-transparent border-2 border-azul-claro rounded-full text-2xl text-azul-claro transition-colors hover:bg-azul-claro hover:text-azul-escuro hover:shadow-azul-claro mx-3 opacity-0 animate-slide-left delay-1500"><i class='bx bxl-facebook-circle'></i></a>
+            <a href="#" class="inline-flex justify-center items-center w-10 h-10 bg-transparent border-2 border-azul-claro rounded-full text-2xl text-azul-claro transition-colors hover:bg-azul-claro hover:text-azul-escuro hover:shadow-azul-claro mx-3 opacity-0 animate-slide-left delay-1700"><i class='bx bxl-twitter'></i></a>
+            <a href="#" class="inline-flex justify-center items-center w-10 h-10 bg-transparent border-2 border-azul-claro rounded-full text-2xl text-azul-claro transition-colors hover:bg-azul-claro hover:text-azul-escuro hover:shadow-azul-claro mx-3 opacity-0 animate-slide-left delay-1900"><i class='bx bxl-instagram'></i></a>
+            <a href="#" class="inline-flex justify-center items-center w-10 h-10 bg-transparent border-2 border-azul-claro rounded-full text-2xl text-azul-claro transition-colors hover:bg-azul-claro hover:text-azul-escuro hover:shadow-azul-claro mx-3 opacity-0 animate-slide-left delay-2100"><i class='bx bxl-linkedin'></i></a>
+        </div>
+        <a href="https://wa.me/5598984401427" class="inline-block py-3 px-7 bg-azul-claro rounded-full text-base text-azul-escuro tracking-wide font-semibold mt-7 mb-10 md:mb-0 opacity-0 animate-slide-top delay-2000 shadow-azul-claro hover:bg-branco hover:text-azul-claro hover:scale-105 hover:shadow-lg">Saiba Mais</a>
+    </div>
+    <div class="home-image w-full md:w-1/2 flex justify-center md:justify-end items-center mt-8 md:mt-0">
+    {% load static %}
+    <img src="https://github.com/dlcantanhede/imagens-mindcare/blob/main/imagens-mindcare/logo.png?raw=true" alt="Descrição da imagem" class="max-w-full md:max-w-80 transition-transform hover:scale-105">
+
+    </div>
+</section>
+<footer class=" bg-cyan-700 text-white py-4 px-[10%]">
+    <!-- Conteúdo do Footer -->
+    <div class="flex justify-between flex-wrap gap-5 max-w-7xl mx-auto">
+      <!-- Sobre Nós -->
+      <div class="flex-1 min-w-[200px] mb-3">
+        <h3 class="text-lg mb-2 text-[#87CEEB]">Sobre Nós</h3>
+        <p class="text-xs leading-relaxed">
+          Somos uma equipe apaixonada por desenvolvimento web, criando soluções incríveis para você.
+        </p>
+      </div>
+
+      <!-- Links Rápidos -->
+      <div class="flex-1 min-w-[200px] mb-3">
+        <h3 class="text-lg mb-2 text-[#87CEEB]">Links Rápidos</h3>
+        <ul class="list-none p-0">
+          <li class="mb-1"><a href="{% url 'home' %}" class="text-white no-underline hover:text-[#87CEEB] transition-colors duration-300">Home</a></li>
+          <li class="mb-1"><a href="https://wa.me/5598984401427" class="text-white no-underline hover:text-[#87CEEB] transition-colors duration-300">Contato</a></li>
+          <li class="mb-1"><a href="{% url 'login' %}" class="text-white no-underline hover:text-[#87CEEB] transition-colors duration-300">Login</a></li>
+        </ul>
+      </div>
+
+      <!-- Redes Sociais -->
+      <div class="flex-1 min-w-[200px] mb-3">
+        <h3 class="text-lg mb-2 text-[#87CEEB]">Redes Sociais</h3>
+        <div class="flex justify-center gap-3">
+          <a href="#" class="flex justify-center items-center w-8 h-8 bg-transparent border-2 border-[#87CEEB] rounded-full text-[#87CEEB] no-underline text-lg transition-all duration-300 hover:bg-[#87CEEB] hover:text-[#2C3E50] hover:-translate-y-1 hover:shadow-lg" style="--i:1">
+            <i class='bx bxl-facebook-circle'></i>
+          </a>
+          <a href="#" class="flex justify-center items-center w-8 h-8 bg-transparent border-2 border-[#87CEEB] rounded-full text-[#87CEEB] no-underline text-lg transition-all duration-300 hover:bg-[#87CEEB] hover:text-[#2C3E50] hover:-translate-y-1 hover:shadow-lg" style="--i:2">
+            <i class='bx bxl-twitter'></i>
+          </a>
+          <a href="#" class="flex justify-center items-center w-8 h-8 bg-transparent border-2 border-[#87CEEB] rounded-full text-[#87CEEB] no-underline text-lg transition-all duration-300 hover:bg-[#87CEEB] hover:text-[#2C3E50] hover:-translate-y-1 hover:shadow-lg" style="--i:3">
+            <i class='bx bxl-instagram'></i>
+          </a>
+          <a href="#" class="flex justify-center items-center w-8 h-8 bg-transparent border-2 border-[#87CEEB] rounded-full text-[#87CEEB] no-underline text-lg transition-all duration-300 hover:bg-[#87CEEB] hover:text-[#2C3E50] hover:-translate-y-1 hover:shadow-lg" style="--i:4">
+            <i class='bx bxl-linkedin'></i>
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Footer Bottom -->
+    <div class="mt-4 pt-3 border-t border-[#87CEEB] text-center">
+      <p class="text-xs">&copy; 2025 Mind Care Edu/INC. Todos os direitos reservados.</p>
+    </div>
+</footer>
+
+<script>
+    const menuToggle = document.getElementById('menuToggle');
+    const mobileMenu = document.getElementById('mobileMenu');
+    menuToggle.addEventListener('click', () => {
+        mobileMenu.classList.toggle('hidden');
+        console.log('Menu alternado');
+    });
+    // Typed.js
+    let typeSpeed = 100;
+    let backSpeed = 100;
+
+    if (window.innerWidth <= 768) {
+            typeSpeed = 80;
+            backSpeed = 80;
+    }
+
+    var typed = new Typed(".text", {
+        strings: ["Análise de Sentimentos", "Saúde Mental", "Bem-estar Escolar"],
+        typeSpeed: typeSpeed,
+        backSpeed: backSpeed,
+        backDelay: 1000,
+        loop: true
+    });
+        // Animações (Tailwind CSS)
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach((entry) => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('animate-slide-right');
+                    entry.target.classList.add('animate-slide-left');
+                    entry.target.classList.add('animate-slide-top');
+                    entry.target.classList.add('animate-slide-bottom');
+                    observer.unobserve(entry.target);
+                }
+            });
+        });
+
+        const hiddenElements = document.querySelectorAll('.opacity-0');
+        hiddenElements.forEach((el) => observer.observe(el));
+</script>
+</body>
+
+</html>

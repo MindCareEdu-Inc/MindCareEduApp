@@ -1,0 +1,85 @@
+{% extends 'base_generic.html' %}
+
+{% block title %}Cadastro de Organizações{% endblock %}
+
+{% block content %}
+<div class="bg-gray-100 flex items-center justify-center min-h-screen">
+    <div class="w-full max-w-lg bg-white p-8 rounded-lg shadow-lg">
+        <h1 class="text-2xl font-bold text-gray-700 mb-6 text-center">Cadastro de Organização</h1>
+        <form method="POST" enctype="multipart/form-data">
+            {% csrf_token %}
+            <div class="space-y-6">
+                <!-- Nome -->
+                <div>
+                    <label for="{{ organization_form.name.id_for_label }}" class="block text-sm font-medium text-gray-700">Nome da Organização</label>
+                    <input type="text" id="{{ organization_form.name.id_for_label }}" name="name" value="{{ organization_form.name.value|default:'' }}" placeholder="Nome da organização" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm">
+                </div>
+
+                <!-- Telefone -->
+                <div>
+                    <label for="{{ organization_form.phone.id_for_label }}" class="block text-sm font-medium text-gray-700">Telefone</label>
+                    <input type="text" id="{{ organization_form.phone.id_for_label }}" name="phone" value="{{ organization_form.phone.value|default:'' }}" placeholder="Telefone da organização" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm">
+                </div>
+
+                <!-- E-mail -->
+                <div>
+                    <label for="{{ organization_form.email.id_for_label }}" class="block text-sm font-medium text-gray-700">E-mail</label>
+                    <input type="email" id="{{ organization_form.email.id_for_label }}" name="email" value="{{ organization_form.email.value|default:'' }}" placeholder="Email da organização" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm">
+                </div>
+
+                <!-- Ativo -->
+                <div class="flex items-center">
+                    <input type="checkbox" id="{{ organization_form.active.id_for_label }}" name="active" {% if organization_form.active.value %}checked{% endif %} class="h-4 w-4 text-indigo-600 border-gray-300 rounded focus:ring-indigo-500">
+                    <label for="{{ organization_form.active.id_for_label }}" class="ml-2 text-sm text-gray-700">Ativa</label>
+                </div>
+
+                <h2 class="text-xl font-bold text-gray-700">Endereço</h2>
+                
+                <!-- Rua -->
+                <div>
+                    <label for="{{ address_form.street.id_for_label }}" class="block text-sm font-medium text-gray-700">Rua</label>
+                    <input type="text" id="{{ address_form.street.id_for_label }}" name="street" value="{{ address_form.street.value|default:'' }}" placeholder="Rua" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm">
+                </div>
+
+                <!-- Número -->
+                <div>
+                    <label for="{{ address_form.number.id_for_label }}" class="block text-sm font-medium text-gray-700">Número</label>
+                    <input type="text" id="{{ address_form.number.id_for_label }}" name="number" value="{{ address_form.number.value|default:'' }}" placeholder="Número" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm">
+                </div>
+
+                <!-- Bairro -->
+                <div>
+                    <label for="{{ address_form.neighborhood.id_for_label }}" class="block text-sm font-medium text-gray-700">Bairro</label>
+                    <input type="text" id="{{ address_form.neighborhood.id_for_label }}" name="neighborhood" value="{{ address_form.neighborhood.value|default:'' }}" placeholder="Bairro" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm">
+                </div>
+
+                <!-- CEP -->
+                <div>
+                    <label for="{{ address_form.cep.id_for_label }}" class="block text-sm font-medium text-gray-700">CEP</label>
+                    <input type="text" id="{{ address_form.cep.id_for_label }}" name="cep" value="{{ address_form.cep.value|default:'' }}" placeholder="CEP" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm">
+                </div>
+
+                <!-- Complemento -->
+                <div>
+                    <label for="{{ address_form.complement.id_for_label }}" class="block text-sm font-medium text-gray-700">Complemento</label>
+                    <input type="text" id="{{ address_form.complement.id_for_label }}" name="complement" value="{{ address_form.complement.value|default:'' }}" placeholder="Complemento" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm">
+                </div>
+
+                <!-- Cidade -->
+                <div>
+                    <label for="{{ address_form.city.id_for_label }}" class="block text-sm font-medium text-gray-700">Cidade</label>
+                    <select id="{{ address_form.city.id_for_label }}" name="city" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm">
+                        {% for city in cities %}
+                            <option value="{{ city.id }}" {% if address_form.city.value == city.id %}selected{% endif %}>{{ city.name }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+
+                <button type="submit" class="w-full px-4 py-2 text-white bg-indigo-600 hover:bg-indigo-700 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 sm:text-sm">
+                    Salvar
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}

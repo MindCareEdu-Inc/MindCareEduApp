@@ -1,0 +1,9 @@
+{% extends 'base_generic.html' %} 
+{% block content %} 
+<h1>Lista de Administradores</h1> 
+<ul> {% for administrador in object_list %} 
+    <li><a href="{% url 'administrador-detail' administrador.pk %}">{{ administrador.nome }}</a></li> 
+    {% endfor %} 
+</ul> 
+<a href="{% url 'administrador-create' %}">Adicionar Novo Administrador</a> 
+{% endblock %}

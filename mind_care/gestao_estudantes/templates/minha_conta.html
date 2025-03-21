@@ -1,0 +1,54 @@
+{% extends 'base_generic.html' %}
+
+{% block title %}Minha Conta{% endblock %}
+
+{% block content %}
+<div class="flex justify-center items-center min-h-screen  p-6">
+    <div class="w-full max-w-md bg-white shadow-2xl rounded-2xl p-6 animate-fadeIn">
+        <div class="flex items-center justify-between mb-6">
+            <h2 class="text-2xl font-bold text-gray-800">Perfil</h2>
+        </div>
+        {% if user_type == "admin" %}
+        <div class="space-y-4">
+            <div class="p-4 bg-gray-100 rounded-lg shadow-sm">
+                <p class="text-gray-500 text-sm">Nome</p>
+                <p class="text-lg font-medium text-gray-800">{{ admin.nome }}</p>
+            </div>
+            <div class="p-4 bg-gray-100 rounded-lg shadow-sm">
+                <p class="text-gray-500 text-sm">E-mail</p>
+                <p class="text-lg font-medium text-gray-800">{{ admin.email }}</p>
+            </div>
+            <div class="p-4 bg-gray-100 rounded-lg shadow-sm">
+                <p class="text-gray-500 text-sm">Telefone</p>
+                <p class="text-lg font-medium text-gray-800">{{ admin.contatos }}</p>
+            </div>
+        </div>
+        {% elif user_type == "server" %}
+        <div class="space-y-4">
+            <div class="p-4 bg-gray-100 rounded-lg shadow-sm">
+                <p class="text-gray-500 text-sm">Nome</p>
+                <p class="text-lg font-medium text-gray-800">{{ servidor.name }}</p>
+            </div>
+            <div class="p-4 bg-gray-100 rounded-lg shadow-sm">
+                <p class="text-gray-500 text-sm">E-mail</p>
+                <p class="text-lg font-medium text-gray-800">{{ servidor.email }}</p>
+            </div>
+            <div class="p-4 bg-gray-100 rounded-lg shadow-sm">
+                <p class="text-gray-500 text-sm">Telefone</p>
+                <p class="text-lg font-medium text-gray-800">{{ servidor.phone }}</p>
+            </div>
+            <div class="p-4 bg-gray-100 rounded-lg shadow-sm">
+                <p class="text-gray-500 text-sm">Organização</p>
+                <p class="text-lg font-medium text-gray-800">{{ servidor.organization.name }}</p>
+            </div>
+        </div>
+
+        {% endif %}
+        <div class="mt-6 flex justify-between">
+            <button class="px-4 py-2 bg-red-500 text-white rounded-lg shadow-md hover:bg-red-600 transition"><a href="{% url 'logout' %}">Sair</a></button>
+            <button class="px-4 py-2 bg-blue-500 text-white rounded-lg shadow-md hover:bg-blue-600 transition"><a href="{% url 'change_password' %}">Redefinir Senha</a></button>
+
+        </div>
+    </div>
+</div>
+{% endblock %}

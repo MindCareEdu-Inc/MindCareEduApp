@@ -1,0 +1,6 @@
+.env
+.venv/
+mind_care/gestao_estudantes/__pycache__/
+mind_care/mind_care/__pycache__/
+mind_care/gestao_estudantes/migrations/
+mind_care/venv/

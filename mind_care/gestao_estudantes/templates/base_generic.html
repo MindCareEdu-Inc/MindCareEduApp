@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dashboard de Emoções</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.5/FileSaver.min.js"></script>
+  <link href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet">
+
+  <style>
+    /* Sidebar fixa */
+    #sidebar {
+      position: fixed;
+      height: 100vh;
+      top: 0;
+      left: 0;
+      width: 16rem;
+      transition: transform 0.3s ease-in-out;
+    }
+
+    /* Conteúdo Principal */
+    #main-content {
+      flex-grow: 1;
+      margin-left: 16rem;
+      /* Espaço da sidebar */
+      transition: margin-left 0.3s ease-in-out;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* Quando a sidebar está oculta */
+    #sidebar.collapsed {
+      transform: translateX(-100%);
+    }
+
+    #main-content.collapsed {
+      margin-left: 0;
+    }
+
+    body {
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+    }
+
+    footer {
+      margin-top: auto;
+    }
+  </style>
+</head>
+
+<body class="bg-gray-100 flex flex-col min-h-screen">
+
+  <!-- Sidebar e Conteúdo Principal -->
+  <div class="flex flex-1">
+    <!-- Sidebar -->
+    <aside id="sidebar" class="p-5 text-white bg-cyan-700">
+      <h2 class="text-xl font-bold mb-0.1 flex">Mind <p class="text-xl font-bold mb-0.1 text-gray-800 px-2 py-1">Care</p><p class=" py-2">Edu</p></h2>
+      <hr class="pb-10">
+      <nav>
+        <ul>
+          <b>
+          {% if user.is_authenticated %}
+            {% if request.session.user_type == "admin" %}
+            <li class="mb-3"><a href="{% url 'home_logado' %}" class="hover:text-cyan-400">Home</a></li>
+            <li class="mb-3"><a href="{% url 'list_organizations' %}" class="hover:text-cyan-400">Listar Organizações</a></li>
+            <li class="mb-3"><a href="{% url 'create_organization' %}" class="hover:text-cyan-400">Nova Organização</a></li>
+            <li class="mb-3"><a href="{% url 'server_create' %}" class="hover:text-cyan-400">Novo Servidor</a></li>
+            <li class="mb-3"><a href="{% url 'server_list' %}" class="hover:text-cyan-400">Listar Servidor</a></li>
+            {% elif request.session.user_type == "server" %}
+            <li class="mb-3"><a href="{% url 'home_logado' %}" class="hover:text-cyan-400">Home</a></li>
+            <li class="mb-3"><a href="{% url 'student_list' %}" class="hover:text-cyan-400">Listar Alunos</a></li>
+            <li class="mb-3"><a href="{% url 'student_create' %}" class="hover:text-cyan-400">Novo Estudante</a></li>
+            {% endif %}
+            {% else %}
+            <li class="mb-3"><a href="{% url 'home' %}" class="hover:text-cyan-400">Home</a></li>
+          {% endif %}
+          </b>
+        </ul>
+      </nav>
+    </aside>
+
+    <!-- Conteúdo Principal -->
+    <div id="main-content" class="p-5 flex flex-col flex-grow">
+      <!-- Navbar -->
+      <header class="bg-white shadow-md p-2 flex justify-between items-center rounded-lg">
+        <button id="toggleSidebar" class="text-[#2C3E50] text-2xl focus:outline-none">☰</button>
+        <div class="text-lg font-semibold"></div>
+        <div class="relative">
+          <button id="userMenuButton" class="flex items-center space-x-4 focus:outline-none">
+            <img class="w-12 h-12 rounded-full border-2 border-gray-600" src="https://github.com/dlcantanhede/imagens-mindcare/blob/main/imagens-mindcare/logo.png?raw=true" alt="Perfil">
+            <div class="text-sm text-gray-700">
+              {% if user_type == "admin" %}
+                <p class="font-semibold"> Olá, {{ admin.nome.split.0 }} :)</p>
+              {% elif user_type == "server" %}
+                <p class="font-semibold">Olá, {{ servidor.name.split.0}} :)</p>
+              {% endif %}
+            </div>
+          </button>
+          <div id="userMenu" class="hidden absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-md py-2">
+            <a href="{% url 'minha_conta' %}" class="block px-4 py-2 text-gray-700 hover:bg-gray-100">Perfil</a>
+            <a href="{% url 'logout' %}" class="block px-4 py-2 text-gray-700 hover:bg-gray-100">Sair</a>
+          </div>
+        </div>
+      </header>
+
+      <!-- Conteúdo dinâmico -->
+      <div id="content" class="mt-4 flex-grow">
+        {% block content %}
+        {% endblock %}
+      </div>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <footer class="bg-cyan-700 text-white py-4 px-[10%] w-full">
+    <div class="flex justify-between flex-wrap gap-5 max-w-7xl mx-auto">
+      <div class="flex-1 min-w-[200px] mb-3">
+        <h3 class="text-lg mb-2 text-[#87CEEB]">Sobre Nós</h3>
+        <p class="text-xs leading-relaxed">
+          Somos uma equipe apaixonada por desenvolvimento web, criando soluções incríveis para você.
+        </p>
+      </div>
+      <div class="flex-1 min-w-[200px] mb-3">
+        <h3 class="text-lg mb-2 text-[#87CEEB]">Links Rápidos</h3>
+        <ul class="list-none p-0">
+          <li class="mb-1"><a href="{% url 'home_logado' %}"
+              class="text-white no-underline hover:text-[#87CEEB] transition-colors duration-300">Home</a></li>
+          <li class="mb-1"><a href="https://wa.me/5598984401427"
+              class="text-white no-underline hover:text-[#87CEEB] transition-colors duration-300">Contato</a></li>
+          <li class="mb-1"><a href="{% url 'login' %}"
+              class="text-white no-underline hover:text-[#87CEEB] transition-colors duration-300">Login</a></li>
+        </ul>
+      </div>
+      <div class="flex-1 min-w-[200px] mb-3">
+        <h3 class="text-lg mb-2 text-[#87CEEB]">Redes Sociais</h3>
+        <div class="flex justify-center gap-3">
+          <a href="#"
+            class="flex justify-center items-center w-8 h-8 bg-transparent border-2 border-[#87CEEB] rounded-full text-[#87CEEB] hover:bg-[#87CEEB] hover:text-[#2C3E50] transition-all">
+            <i class='bx bxl-facebook-circle'></i>
+          </a>
+          <a href="#"
+            class="flex justify-center items-center w-8 h-8 bg-transparent border-2 border-[#87CEEB] rounded-full text-[#87CEEB] hover:bg-[#87CEEB] hover:text-[#2C3E50] transition-all">
+            <i class='bx bxl-twitter'></i>
+          </a>
+          <a href="#"
+            class="flex justify-center items-center w-8 h-8 bg-transparent border-2 border-[#87CEEB] rounded-full text-[#87CEEB] hover:bg-[#87CEEB] hover:text-[#2C3E50] transition-all">
+            <i class='bx bxl-instagram'></i>
+          </a>
+          <a href="#"
+            class="flex justify-center items-center w-8 h-8 bg-transparent border-2 border-[#87CEEB] rounded-full text-[#87CEEB] hover:bg-[#87CEEB] hover:text-[#2C3E50] transition-all">
+            <i class='bx bxl-linkedin'></i>
+          </a>
+        </div>
+      </div>
+    </div>
+    <div class="mt-4 pt-3 border-t border-[#87CEEB] text-center">
+      <p class="text-xs">&copy; 2025 Mind Care Edu/INC. Todos os direitos reservados.</p>
+    </div>
+  </footer>
+
+  <script>
+    document.getElementById('toggleSidebar').addEventListener('click', function () {
+      document.getElementById('sidebar').classList.toggle('collapsed');
+      document.getElementById('main-content').classList.toggle('collapsed');
+    });
+
+    document.getElementById('userMenuButton').addEventListener('click', function () {
+      document.getElementById('userMenu').classList.toggle('hidden');
+    });
+
+    window.addEventListener('click', function (event) {
+      const userMenu = document.getElementById('userMenu');
+      if (!document.getElementById('userMenuButton').contains(event.target) && !userMenu.contains(event.target)) {
+        userMenu.classList.add('hidden');
+      }
+    });
+  </script>
+</body>
+
+</html>
